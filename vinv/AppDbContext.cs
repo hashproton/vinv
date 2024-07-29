@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using vinv.Entities;
 
-namespace vinv
-{
-    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
-    {
-        public DbSet<Product> Products { get; set; }
+namespace vinv;
 
-        public DbSet<Category> Categories { get; set; }
-    }
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+{
+    public DbSet<Product> Products { get; set; }
+
+    public DbSet<Category> Categories { get; set; }
+    
+    public DbSet<ProductStock> ProductStocks { get; set; }
 }

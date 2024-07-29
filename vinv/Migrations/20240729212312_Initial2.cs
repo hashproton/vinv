@@ -5,7 +5,7 @@
 namespace vinv.Migrations
 {
     /// <inheritdoc />
-    public partial class mssql_migration_509 : Migration
+    public partial class Initial2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

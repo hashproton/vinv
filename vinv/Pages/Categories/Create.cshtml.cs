@@ -9,41 +9,40 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using vinv;
 using vinv.Entities;
 
-namespace vinv.Pages.Categories
-{
-    public class CategoryRequest
-    {
-        [Required]
-        [StringLength(100)]
-        public string Name { get; set; }
-    }
-    public class CreateModel(AppDbContext context) : PageModel
-    {
-        private readonly AppDbContext _context = context;
+namespace vinv.Pages.Categories;
 
-        public IActionResult OnGet()
+public class CategoryRequest
+{
+    [Required]
+    [StringLength(100)]
+    public string Name { get; set; }
+}
+public class CreateModel(AppDbContext context) : PageModel
+{
+    private readonly AppDbContext _context = context;
+
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
+
+    [BindProperty]
+    public CategoryRequest CategoryRequest { get; set; } = default!;
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
         {
             return Page();
         }
 
-        [BindProperty]
-        public CategoryRequest CategoryRequest { get; set; } = default!;
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        _context.Categories.Add(new()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            Name = CategoryRequest.Name
+        });
+        await _context.SaveChangesAsync();
 
-            _context.Categories.Add(new()
-            {
-                Name = CategoryRequest.Name
-            });
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

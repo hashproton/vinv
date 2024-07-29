@@ -3,18 +3,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using vinv.Entities;
 
-namespace vinv.Pages
+namespace vinv.Pages;
+
+public class IndexModel(ILogger<IndexModel> logger, AppDbContext context) : PageModel
 {
-    public class IndexModel(ILogger<IndexModel> logger, AppDbContext context) : PageModel
+    [BindProperty]
+    public List<Product> Products { get; set; }
+
+    public async Task OnGet()
     {
-        [BindProperty]
-        public List<Product> Products { get; set; }
+        Products = await context.Products.ToListAsync();
 
-        public async Task OnGet()
-        {
-            Products = await context.Products.ToListAsync();
-
-            logger.LogInformation("Products fetched successfully");
-        }
+        logger.LogInformation("Products fetched successfully");
     }
 }
