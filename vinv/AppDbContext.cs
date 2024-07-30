@@ -10,4 +10,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Category> Categories { get; set; }
     
     public DbSet<ProductStock> ProductStocks { get; set; }
+
+    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 }

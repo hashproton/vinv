@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-ViewData["Title"] = "Product Stock List";
+    ViewData["Title"] = "Product Stock List";
 }
 
 <h1>Product Stock List</h1>
@@ -22,18 +22,6 @@ ViewData["Title"] = "Product Stock List";
                     <option value="Available">Available</option>
                     <option value="LowStock">Low Stock</option>
                 </select>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label asp-for="ViewModel.MinStockFilter">Min Stock</label>
-                <input asp-for="ViewModel.MinStockFilter" class="form-control" type="number" step="0.01" />
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-group">
-                <label asp-for="ViewModel.MaxStockFilter">Max Stock</label>
-                <input asp-for="ViewModel.MaxStockFilter" class="form-control" type="number" step="0.01" />
             </div>
         </div>
     </div>
@@ -63,11 +51,11 @@ ViewData["Title"] = "Product Stock List";
         <td>
             @if (item.IsAvailable)
             {
-            <span class="badge badge-success">Available</span>
+                <span>Available </span>
             }
             else
             {
-            <span class="badge badge-warning">Low Stock</span>
+                <span>Low Stock</span>
             }
         </td>
         <td>

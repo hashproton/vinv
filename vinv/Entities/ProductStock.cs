@@ -12,7 +12,7 @@ public class ProductStock
     
     public int ProductId { get; set; }
 
-    public bool IsAvailable => Stock >= MinimalStock;
+    public bool IsAvailable => Stock > MinimalStock;
     
-    public bool IsLowStock => Stock < MinimalStock;
+    public bool IsLowStock => Stock <= MinimalStock;
 }
