@@ -11,16 +11,16 @@ namespace Application.Features.Commands.CreateCategory
     {
         public class Command : IRequest<Result<int>>
         {
-            public string Name { get; set; } = null!;
+            public required string Name { get; init; }
         }
 
         public class Validator : AbstractValidator<Command>
         {
             public Validator()
             {
-                RuleFor(x => x.Name)
-                     .NotEmpty().WithMessage("Name is required.")
-                     .MaximumLength(200).WithMessage("Name must not exceed 200 characters.");
+                RuleFor(c => c.Name)
+                     .NotEmpty()
+                     .MaximumLength(200);
             }
         }
 
@@ -31,14 +31,14 @@ namespace Application.Features.Commands.CreateCategory
                 var existingCategory = await categoriesRepository.GetByNameAsync(request.Name, cancellationToken);
                 if (existingCategory != null)
                 {
-                    return Result<int>.Failure(CategoryErrors.AlreadyExists);
+                    return Result.Failure<int>(CategoryErrors.AlreadyExists(request.Name));
                 }
 
                 var category = new Category { Name = request.Name };
 
                 await categoriesRepository.CreateAsync(category, cancellationToken);
 
-                return Result<int>.Success(category.Id);
+                return Result.Success(category.Id);
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using Application.Repositories;
+﻿using Application.Errors;
+using Application.Repositories;
+using Application.Shared;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -7,32 +9,41 @@ namespace Application.Features.Commands.CreateProduct
 {
     public static class CreateProduct
     {
-        public class Command : IRequest<int>
+        public class Command : IRequest<Result<int>>
         {
-            public string Name { get; set; } = null!;
-            public int CategoryId { get; set; }
+            public required string Name { get; init; }
+            public required int CategoryId { get; init; }
         }
 
         public class Validator : AbstractValidator<Command>
         {
-            public Validator(ICategoriesRepository categoriesRepository)
+            public Validator()
             {
-                RuleFor(x => x.Name)
+                RuleFor(c => c.Name)
                     .NotEmpty()
                     .MaximumLength(200);
 
-                RuleFor(x => x.CategoryId)
-                    .GreaterThan(0)
-                    .MustAsync(async (categoryId, cancellation) =>
-                        await categoriesRepository.GetByIdAsync(categoryId, cancellation) != null)
-                    .WithMessage("Category not found");
+                RuleFor(c => c.CategoryId)
+                    .GreaterThan(0);
             }
         }
 
-        public class Handler(IProductsRepository productsRepository) : IRequestHandler<Command, int>
+        public class Handler(
+            IProductsRepository productsRepository,
+            ICategoriesRepository categoriesRepository) : IRequestHandler<Command, Result<int>>
         {
-            public async Task<int> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<int>> Handle(Command request, CancellationToken cancellationToken)
             {
+                if (await productsRepository.GetByNameAsync(request.Name, cancellationToken) != null)
+                {
+                    return Result<int>.Failure(ProductErrors.AlreadyExists(request.Name));
+                }
+
+                if (await categoriesRepository.GetByIdAsync(request.CategoryId, cancellationToken) == null)
+                {
+                    return Result<int>.Failure(CategoryErrors.NotFoundById(request.CategoryId));
+                }
+
                 var product = new Product
                 {
                     Name = request.Name,
@@ -40,7 +51,8 @@ namespace Application.Features.Commands.CreateProduct
                 };
 
                 await productsRepository.CreateAsync(product, cancellationToken);
-                return product.Id;
+
+                return Result.Success(product.Id);
             }
         }
     }

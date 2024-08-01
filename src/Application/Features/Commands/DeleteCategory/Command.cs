@@ -10,14 +10,15 @@ namespace Application.Features.Commands.DeleteCategory
     {
         public class Command : IRequest<Result>
         {
-            public int Id { get; set; }
+            public required int Id { get; init; }
         }
 
         public class Validator : AbstractValidator<Command>
         {
             public Validator()
             {
-                RuleFor(x => x.Id).GreaterThan(0);
+                RuleFor(c => c.Id)
+                    .GreaterThan(0);
             }
         }
 

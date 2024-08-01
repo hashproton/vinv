@@ -1,4 +1,6 @@
-﻿using Application.Repositories;
+﻿using Application.Errors;
+using Application.Repositories;
+using Application.Shared;
 using FluentValidation;
 using MediatR;
 
@@ -6,47 +8,51 @@ namespace Application.Features.Commands.UpdateProduct
 {
     public static class UpdateProduct
     {
-        public class Command : IRequest<bool>
+        public class Command : IRequest<Result>
         {
-            public int Id { get; set; }
-
-            public string Name { get; set; } = null!;
-
-            public int CategoryId { get; set; }
+            public required int Id { get; init; }
+            public required string Name { get; init; }
+            public required int CategoryId { get; init; }
         }
 
         public class Validator : AbstractValidator<Command>
         {
-            public Validator(IProductsRepository productsRepository, ICategoriesRepository categoriesRepository)
+            public Validator()
             {
-                RuleFor(x => x.Id)
-                    .GreaterThan(0)
-                    .MustAsync(async (id, cancellation) =>
-                        await productsRepository.GetByIdAsync(id, cancellation) != null)
-                    .WithMessage("Product not found");
+                RuleFor(c => c.Id)
+                    .GreaterThan(0);
 
-                RuleFor(x => x.Name)
+                RuleFor(c => c.Name)
                     .NotEmpty()
                     .MaximumLength(200);
 
-                RuleFor(x => x.CategoryId)
-                    .GreaterThan(0)
-                    .MustAsync(async (categoryId, cancellation) =>
-                        await categoriesRepository.GetByIdAsync(categoryId, cancellation) != null)
-                    .WithMessage("Category not found");
+                RuleFor(c => c.CategoryId)
+                    .GreaterThan(0);
             }
         }
 
-        public class Handler(IProductsRepository productsRepository) : IRequestHandler<Command, bool>
+        public class Handler(
+            IProductsRepository productsRepository,
+            ICategoriesRepository categoriesRepository) : IRequestHandler<Command, Result>
         {
-            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
             {
                 var product = await productsRepository.GetByIdAsync(request.Id, cancellationToken);
+                if (product == null)
+                {
+                    return Result.Failure(ProductErrors.NotFoundById(request.Id));
+                }
+
+                if (categoriesRepository.GetByIdAsync(request.CategoryId, cancellationToken) == null)
+                {
+                    return Result.Failure(CategoryErrors.NotFoundById(request.CategoryId));
+                }
+
                 product.Name = request.Name;
                 product.CategoryId = request.CategoryId;
                 await productsRepository.UpdateAsync(product, cancellationToken);
 
-                return true;
+                return Result.Success();
             }
         }
     }

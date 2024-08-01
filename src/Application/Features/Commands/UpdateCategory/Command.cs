@@ -10,19 +10,19 @@ namespace Application.Features.Commands.UpdateCategory
     {
         public class Command : IRequest<Result>
         {
-            public int Id { get; set; }
+            public required int Id { get; init; }
 
-            public string Name { get; set; } = null!;
+            public required string Name { get; init; }
         }
 
         public class Validator : AbstractValidator<Command>
         {
             public Validator()
             {
-                RuleFor(x => x.Id).GreaterThan(0);
-                RuleFor(x => x.Name)
-                    .NotEmpty().WithMessage("Name is required.")
-                    .MaximumLength(200).WithMessage("Name must not exceed 200 characters.");
+                RuleFor(c => c.Id).GreaterThan(0);
+                RuleFor(c => c.Name)
+                    .NotEmpty()
+                    .MaximumLength(200);
             }
         }
 
@@ -37,13 +37,14 @@ namespace Application.Features.Commands.UpdateCategory
                 }
 
                 var existingCategoryWithName = await categoriesRepository.GetByNameAsync(request.Name, cancellationToken);
-                if (existingCategoryWithName != null && existingCategoryWithName.Id != request.Id)
+                if (existingCategoryWithName != null)
                 {
-                    return Result.Failure(CategoryErrors.AlreadyExists);
+                    return Result.Failure(CategoryErrors.AlreadyExists(request.Name));
                 }
 
                 category.Name = request.Name;
                 await categoriesRepository.UpdateAsync(category, cancellationToken);
+
                 return Result.Success();
             }
         }

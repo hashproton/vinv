@@ -1,10 +1,10 @@
 ﻿using Application.Features.Commands.CreateCategory;
-using Application.Features.Commands.UpdateCategory;
 using Application.Features.Commands.DeleteCategory;
+using Application.Features.Commands.UpdateCategory;
 using Application.Features.Queries.GetCategoryById;
 using MediatR;
-using Presentation.Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Api.Extensions;
 
 namespace Presentation.Api.Endpoints
 {
@@ -26,7 +26,7 @@ namespace Presentation.Api.Endpoints
                 .Produces<GetCategoryById.CategoryDto>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound);
 
-            group.MapPut("/{id}", UpdateCategory)
+            group.MapPut("/", UpdateCategory)
                 .WithName("UpdateCategory")
                 .Produces(StatusCodes.Status204NoContent)
                 .Produces(StatusCodes.Status404NotFound)
@@ -54,11 +54,8 @@ namespace Presentation.Api.Endpoints
             return result.IsSuccess ? Results.Ok(result.Value) : result.MapError();
         }
 
-        private static async Task<IResult> UpdateCategory(IMediator mediator, [FromRoute] int id, [FromBody] UpdateCategory.Command command)
+        private static async Task<IResult> UpdateCategory(IMediator mediator, [FromBody] UpdateCategory.Command command)
         {
-            if (id != command.Id)
-                return Results.BadRequest("ID in route does not match ID in body");
-
             var result = await mediator.Send(command);
             return result.IsSuccess ? Results.NoContent() : result.MapError();
         }

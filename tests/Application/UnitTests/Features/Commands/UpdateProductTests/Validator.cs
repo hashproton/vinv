@@ -1,109 +1,50 @@
 ﻿using Application.Features.Commands.UpdateProduct;
-using Application.Repositories;
-using Domain;
 using FluentValidation.TestHelper;
-using NSubstitute;
 
 namespace Application.UnitTests.Features.Commands.UpdateProductTests
 {
     [TestClass]
-    public class UpdateProductValidator
+    public class UpdateProductValidatorTests
     {
-        private IProductsRepository _productsRepository;
-        private ICategoriesRepository _categoriesRepository;
-        private UpdateProduct.Validator _validator;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _productsRepository = Substitute.For<IProductsRepository>();
-            _categoriesRepository = Substitute.For<ICategoriesRepository>();
-            _validator = new UpdateProduct.Validator(_productsRepository, _categoriesRepository);
-        }
+        private readonly UpdateProduct.Validator _validator = new();
 
         [TestMethod]
-        public async Task Should_have_error_when_Id_is_zero()
+        public void ShouldHaveErrorWhenIdIsZero()
         {
-            var command = new UpdateProduct.Command { Id = 0, Name = "Test", CategoryId = 1 };
-            var result = await _validator.TestValidateAsync(command);
+            var command = new UpdateProduct.Command { Id = 0, Name = "Valid Name", CategoryId = 1 };
+            var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.Id);
         }
 
         [TestMethod]
-        public async Task Should_have_error_when_product_not_found()
-        {
-            _productsRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Product?)null);
-
-            var command = new UpdateProduct.Command { Id = 1, Name = "Test", CategoryId = 1 };
-            var result = await _validator.TestValidateAsync(command);
-            result.ShouldHaveValidationErrorFor(x => x.Id)
-                .WithErrorMessage("Product not found");
-        }
-
-        [TestMethod]
-        public async Task Should_not_have_error_when_product_found()
-        {
-            _productsRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new Product());
-
-            var command = new UpdateProduct.Command { Id = 1, Name = "Test", CategoryId = 1 };
-            var result = await _validator.TestValidateAsync(command);
-            result.ShouldNotHaveValidationErrorFor(x => x.Id);
-        }
-
-        [TestMethod]
-        public async Task Should_have_error_when_Name_is_empty()
+        public void ShouldHaveErrorWhenNameIsEmpty()
         {
             var command = new UpdateProduct.Command { Id = 1, Name = "", CategoryId = 1 };
-            var result = await _validator.TestValidateAsync(command);
+            var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.Name);
         }
 
         [TestMethod]
-        public async Task Should_have_error_when_Name_exceeds_maximum_length()
+        public void ShouldHaveErrorWhenNameExceedsMaxLength()
         {
             var command = new UpdateProduct.Command { Id = 1, Name = new string('a', 201), CategoryId = 1 };
-            var result = await _validator.TestValidateAsync(command);
+            var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.Name);
         }
 
         [TestMethod]
-        public async Task Should_have_error_when_CategoryId_is_zero()
+        public void ShouldHaveErrorWhenCategoryIdIsZero()
         {
-            var command = new UpdateProduct.Command { Id = 1, Name = "Test", CategoryId = 0 };
-            var result = await _validator.TestValidateAsync(command);
+            var command = new UpdateProduct.Command { Id = 1, Name = "Valid Product Name", CategoryId = 0 };
+            var result = _validator.TestValidate(command);
             result.ShouldHaveValidationErrorFor(x => x.CategoryId);
         }
 
         [TestMethod]
-        public async Task Should_have_error_when_category_not_found()
+        public void ShouldNotHaveErrorWhenCommandIsValid()
         {
-            _categoriesRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Category?)null);
-
-            var command = new UpdateProduct.Command { Id = 1, Name = "Test", CategoryId = 1 };
-            var result = await _validator.TestValidateAsync(command);
-            result.ShouldHaveValidationErrorFor(x => x.CategoryId)
-                .WithErrorMessage("Category not found");
-        }
-
-        [TestMethod]
-        public async Task Should_not_have_error_when_category_found()
-        {
-            _productsRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new Product());
-            _categoriesRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new Category());
-
-            var command = new UpdateProduct.Command { Id = 1, Name = "Test", CategoryId = 1 };
-            var result = await _validator.TestValidateAsync(command);
-            result.ShouldNotHaveValidationErrorFor(x => x.CategoryId);
-        }
-
-        [TestMethod]
-        public async Task Should_pass_for_valid_command()
-        {
-            _productsRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new Product());
-            _categoriesRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns(new Category());
-
-            var command = new UpdateProduct.Command { Id = 1, Name = "Valid Name", CategoryId = 1 };
-            var result = await _validator.TestValidateAsync(command);
+            var command = new UpdateProduct.Command { Id = 1, Name = "Valid Product Name", CategoryId = 1 };
+            var result = _validator.TestValidate(command);
             result.ShouldNotHaveAnyValidationErrors();
         }
     }

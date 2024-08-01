@@ -4,7 +4,7 @@ namespace Application.Errors
 {
     public class CategoryErrors
     {
-        public static Error AlreadyExists => Error.Create(ErrorType.AlreadyExists, "Category already exists.");
+        public static Error AlreadyExists(string name) => Error.Create(ErrorType.AlreadyExists, $"Category with name {name} already exists.");
 
         public static Error NotFound => Error.Create(ErrorType.NotFound, "Category not found.");
 

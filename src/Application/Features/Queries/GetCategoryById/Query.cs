@@ -17,7 +17,8 @@ namespace Application.Features.Queries.GetCategoryById
         {
             public Validator()
             {
-                RuleFor(x => x.Id).GreaterThan(0);
+                RuleFor(c => c.Id)
+                    .GreaterThan(0);
             }
         }
 
@@ -28,7 +29,7 @@ namespace Application.Features.Queries.GetCategoryById
                 var category = await categoriesRepository.GetByIdAsync(request.Id, cancellationToken);
                 if (category == null)
                 {
-                    return Result<CategoryDto>.Failure(CategoryErrors.NotFoundById(request.Id));
+                    return Result.Failure<CategoryDto>(CategoryErrors.NotFoundById(request.Id));
                 }
 
                 var categoryDto = new CategoryDto
@@ -37,14 +38,15 @@ namespace Application.Features.Queries.GetCategoryById
                     Name = category.Name
                 };
 
-                return Result<CategoryDto>.Success(categoryDto);
+                return Result.Success(categoryDto);
             }
         }
+
         public class CategoryDto
         {
-            public int Id { get; set; }
+            public required int Id { get; init; }
 
-            public string Name { get; set; } = null!;
+            public required string Name { get; init; }
         }
     }
 }

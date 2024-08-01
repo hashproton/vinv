@@ -6,6 +6,7 @@
         NotFound,
         ValidationError,
         Unauthorized,
-        Forbidden
+        Forbidden,
+        Unknown
     }
 }

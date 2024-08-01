@@ -1,4 +1,6 @@
-﻿using Application.Repositories;
+﻿using Application.Errors;
+using Application.Repositories;
+using Application.Shared;
 using FluentValidation;
 using MediatR;
 
@@ -6,42 +8,44 @@ namespace Application.Features.Queries.GetProductById
 {
     public static class GetProductById
     {
-        public class Query : IRequest<ProductDto?>
+        public class Query : IRequest<Result<ProductDto>>
         {
             public int Id { get; set; }
         }
 
         public class Validator : AbstractValidator<Query>
         {
-            public Validator(IProductsRepository productsRepository)
+            public Validator()
             {
-                RuleFor(x => x.Id)
-                    .GreaterThan(0)
-                    .MustAsync(async (id, cancellation) =>
-                        await productsRepository.GetByIdAsync(id, cancellation) != null)
-                    .WithMessage("Product not found");
+                RuleFor(c => c.Id)
+                    .GreaterThan(0);
             }
         }
 
-        public class Handler(IProductsRepository productsRepository) : IRequestHandler<Query, ProductDto?>
+        public class Handler(IProductsRepository productsRepository) : IRequestHandler<Query, Result<ProductDto>>
         {
-            public async Task<ProductDto?> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<ProductDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var product = await productsRepository.GetByIdAsync(request.Id, cancellationToken);
-                return product == null ? null : new ProductDto
+                if (product == null)
+                {
+                    return Result.Failure<ProductDto>(ProductErrors.NotFoundById(request.Id));
+                }
+
+                return Result.Success(new ProductDto
                 {
                     Id = product.Id,
                     Name = product.Name,
                     CategoryId = product.CategoryId
-                };
+                });
             }
         }
-    }
 
-    public class ProductDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int CategoryId { get; set; }
+        public class ProductDto
+        {
+            public required int Id { get; init; }
+            public required string Name { get; init; }
+            public required int CategoryId { get; init; }
+        }
     }
 }

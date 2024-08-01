@@ -1,16 +1,12 @@
 ﻿namespace Application.Shared
 {
-    public class Result<T>
+    public class Result<T> : ResultBase
     {
-        public bool IsSuccess { get; }
         public T? Value { get; }
-        public Error? Error { get; }
 
-        private Result(bool isSuccess, T? value, Error? error)
+        private Result(bool isSuccess, T? value, Error? error) : base(error)
         {
-            IsSuccess = isSuccess;
             Value = value;
-            Error = error;
         }
 
         public static Result<T> Success(T value) => new(true, value, null);
@@ -18,18 +14,29 @@
         public static Result<T> Failure(Error error) => new(false, default, error);
     }
 
-    public class Result
+    public class Result : ResultBase
     {
-        public bool IsSuccess => Error == null;
-        public Error? Error { get; }
-
-        private Result(Error? error)
+        private Result(Error? error) : base(error)
         {
-            Error = error;
         }
 
         public static Result Success() => new(null);
 
         public static Result Failure(Error error) => new(error);
+
+        public static Result<T> Success<T>(T value) => Result<T>.Success(value);
+
+        public static Result<T> Failure<T>(Error error) => Result<T>.Failure(error);
+    }
+
+    public abstract class ResultBase
+    {
+        public bool IsSuccess => Error == null;
+        public Error? Error { get; }
+
+        protected ResultBase(Error? error)
+        {
+            Error = error;
+        }
     }
 }

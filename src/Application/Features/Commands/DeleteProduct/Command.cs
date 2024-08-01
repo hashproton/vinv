@@ -1,4 +1,6 @@
-﻿using Application.Repositories;
+﻿using Application.Errors;
+using Application.Repositories;
+using Application.Shared;
 using FluentValidation;
 using MediatR;
 
@@ -6,33 +8,33 @@ namespace Application.Features.Commands.DeleteProduct
 {
     public static class DeleteProduct
     {
-        public class Command : IRequest<bool>
+        public class Command : IRequest<Result>
         {
-            public int Id { get; set; }
+            public required int Id { get; init; }
         }
 
         public class Validator : AbstractValidator<Command>
         {
-            public Validator(IProductsRepository productsRepository)
+            public Validator()
             {
-                RuleFor(x => x.Id)
-                    .GreaterThan(0)
-                    .MustAsync(async (id, cancellation) =>
-                        await productsRepository.GetByIdAsync(id, cancellation) != null)
-                    .WithMessage("Product not found");
+                RuleFor(c => c.Id)
+                    .GreaterThan(0);
             }
         }
 
-        public class Handler(IProductsRepository productsRepository) : IRequestHandler<Command, bool>
+        public class Handler(IProductsRepository productsRepository) : IRequestHandler<Command, Result>
         {
-            public async Task<bool> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
             {
                 var product = await productsRepository.GetByIdAsync(request.Id, cancellationToken);
                 if (product == null)
-                    return false;
+                {
+                    return Result.Failure(ProductErrors.NotFoundById(request.Id));
+                }
 
                 await productsRepository.DeleteAsync(product, cancellationToken);
-                return true;
+                
+                return Result.Success();
             }
         }
     }

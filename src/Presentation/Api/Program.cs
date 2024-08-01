@@ -1,5 +1,6 @@
 using Presentation.Api.Endpoints;
 using Infra;
+using Presentation.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,11 @@ builder.Services.AddSwaggerGen(c =>
         return fullName;
     });
 });
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler(_ => { });
 
 if (app.Environment.IsDevelopment())
 {
