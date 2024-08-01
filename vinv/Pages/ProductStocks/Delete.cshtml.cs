@@ -4,17 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace vinv.Pages.ProductStocks;
 
-public class DeleteModel : PageModel
+public class DeleteModel(AppDbContext context, ILogger<DeleteModel> logger) : PageModel
 {
-    private readonly AppDbContext _context;
-    private readonly ILogger<DeleteModel> _logger;
-
-    public DeleteModel(AppDbContext context, ILogger<DeleteModel> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
-
     [BindProperty]
     public Entities.ProductStock ProductStock { get; set; }
 
@@ -25,7 +16,7 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        ProductStock = await _context.ProductStocks
+        ProductStock = await context.ProductStocks
             .Include(ps => ps.Product)
             .FirstOrDefaultAsync(ps => ps.Id == id);
 
@@ -44,13 +35,13 @@ public class DeleteModel : PageModel
             return NotFound();
         }
 
-        ProductStock = await _context.ProductStocks.FindAsync(id);
+        ProductStock = await context.ProductStocks.FindAsync(id);
 
         if (ProductStock != null)
         {
-            _context.ProductStocks.Remove(ProductStock);
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Deleted product stock for ProductId {ProductId}", ProductStock.ProductId);
+            context.ProductStocks.Remove(ProductStock);
+            await context.SaveChangesAsync();
+            logger.LogInformation("Deleted product stock for ProductId {ProductId}", ProductStock.ProductId);
         }
 
         return RedirectToPage("./Index");

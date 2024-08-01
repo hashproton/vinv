@@ -11,23 +11,14 @@ public class ProductStockListViewModel
     public string StockStatusFilter { get; set; }
 }
 
-public class IndexModel : PageModel
+public class IndexModel(AppDbContext context, ILogger<IndexModel> logger) : PageModel
 {
-    private readonly AppDbContext _context;
-    private readonly ILogger<IndexModel> _logger;
-
-    public IndexModel(AppDbContext context, ILogger<IndexModel> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
-
     [BindProperty(SupportsGet = true)]
     public ProductStockListViewModel ViewModel { get; set; } = new();
 
     public async Task OnGetAsync()
     {
-        var query = _context.ProductStocks
+        var query = context.ProductStocks
             .Include(ps => ps.Product)
             .AsQueryable();
 

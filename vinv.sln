@@ -3,7 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vinv", "vinv\vinv.csproj", "{42D7786F-5E22-4A1D-882B-E84597C24C6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "vinv", "vinv\vinv.csproj", "{42D7786F-5E22-4A1D-882B-E84597C24C6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{08912ABB-985F-4B9F-9191-C20618B85ACF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Presentation\Api\Api\Api.csproj", "{BBB76CE0-79FA-43D0-9F0A-AD5F0321CE6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{A8D527E2-D06D-486C-B7CD-12203992D59F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{AB7990C3-151B-4D1D-9D2E-F967F390DB3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra", "Infra\Infra.csproj", "{E22E1A71-9C03-4843-8D3A-D8C3FEA7F26B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "tests\Application\UnitTests\UnitTests.csproj", "{E1605597-65FB-4165-83C9-7FC61541B495}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{943405E8-CA94-473A-9322-90F20AB9A245}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{1C82094E-290C-4AA9-84CD-62D0C78E8466}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +31,34 @@ Global
 		{42D7786F-5E22-4A1D-882B-E84597C24C6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42D7786F-5E22-4A1D-882B-E84597C24C6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42D7786F-5E22-4A1D-882B-E84597C24C6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBB76CE0-79FA-43D0-9F0A-AD5F0321CE6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBB76CE0-79FA-43D0-9F0A-AD5F0321CE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBB76CE0-79FA-43D0-9F0A-AD5F0321CE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBB76CE0-79FA-43D0-9F0A-AD5F0321CE6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D527E2-D06D-486C-B7CD-12203992D59F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D527E2-D06D-486C-B7CD-12203992D59F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D527E2-D06D-486C-B7CD-12203992D59F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D527E2-D06D-486C-B7CD-12203992D59F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB7990C3-151B-4D1D-9D2E-F967F390DB3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB7990C3-151B-4D1D-9D2E-F967F390DB3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB7990C3-151B-4D1D-9D2E-F967F390DB3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB7990C3-151B-4D1D-9D2E-F967F390DB3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E22E1A71-9C03-4843-8D3A-D8C3FEA7F26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E22E1A71-9C03-4843-8D3A-D8C3FEA7F26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E22E1A71-9C03-4843-8D3A-D8C3FEA7F26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E22E1A71-9C03-4843-8D3A-D8C3FEA7F26B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1605597-65FB-4165-83C9-7FC61541B495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1605597-65FB-4165-83C9-7FC61541B495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1605597-65FB-4165-83C9-7FC61541B495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1605597-65FB-4165-83C9-7FC61541B495}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BBB76CE0-79FA-43D0-9F0A-AD5F0321CE6D} = {08912ABB-985F-4B9F-9191-C20618B85ACF}
+		{E1605597-65FB-4165-83C9-7FC61541B495} = {1C82094E-290C-4AA9-84CD-62D0C78E8466}
+		{1C82094E-290C-4AA9-84CD-62D0C78E8466} = {943405E8-CA94-473A-9322-90F20AB9A245}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B9920AC1-1F11-493A-832E-6F16E2C50760}

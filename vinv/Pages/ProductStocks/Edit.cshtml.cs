@@ -22,17 +22,8 @@ public class EditProductStockRequest
     [Display(Name = "Product")]
     public int ProductId { get; set; }
 }
-public class EditModel : PageModel
+public class EditModel(AppDbContext context, ILogger<EditModel> logger) : PageModel
 {
-    private readonly AppDbContext _context;
-    private readonly ILogger<EditModel> _logger;
-
-    public EditModel(AppDbContext context, ILogger<EditModel> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
-
     [BindProperty]
     public EditProductStockRequest EditRequest { get; set; } = default!;
 
@@ -45,7 +36,7 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        var productStock = await _context.ProductStocks
+        var productStock = await context.ProductStocks
             .Include(ps => ps.Product)
             .FirstOrDefaultAsync(ps => ps.Id == id);
 
@@ -74,7 +65,7 @@ public class EditModel : PageModel
             return Page();
         }
 
-        var productStockToUpdate = await _context.ProductStocks.FindAsync(EditRequest.Id);
+        var productStockToUpdate = await context.ProductStocks.FindAsync(EditRequest.Id);
 
         if (productStockToUpdate == null)
         {
@@ -87,15 +78,15 @@ public class EditModel : PageModel
             productStockToUpdate.MinimalStock = EditRequest.MinimalStock;
             productStockToUpdate.ProductId = EditRequest.ProductId;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
 
-            _logger.LogInformation("Updated product stock for ProductId {ProductId}", productStockToUpdate.ProductId);
+            logger.LogInformation("Updated product stock for ProductId {ProductId}", productStockToUpdate.ProductId);
 
             return RedirectToPage("./Index");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while updating the product stock");
+            logger.LogError(ex, "An error occurred while updating the product stock");
             ModelState.AddModelError(string.Empty, "An error occurred while updating the product stock. Please try again.");
             await PopulateProductOptionsAsync();
             return Page();
@@ -104,7 +95,7 @@ public class EditModel : PageModel
 
     private async Task PopulateProductOptionsAsync()
     {
-        var products = await _context.Products.ToListAsync();
+        var products = await context.Products.ToListAsync();
         ProductOptions = new SelectList(products, "Id", "Name");
     }
 }

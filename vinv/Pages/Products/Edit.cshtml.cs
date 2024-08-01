@@ -18,17 +18,8 @@ public class EditProductRequest
     public int CategoryId { get; set; }
 }
 
-public class EditModel : PageModel
+public class EditModel(AppDbContext context, ILogger<EditModel> logger) : PageModel
 {
-    private readonly AppDbContext _context;
-    private readonly ILogger<EditModel> _logger;
-
-    public EditModel(AppDbContext context, ILogger<EditModel> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
-
     [BindProperty]
     public EditProductRequest EditRequest { get; set; } = default!;
 
@@ -43,7 +34,7 @@ public class EditModel : PageModel
             return NotFound();
         }
 
-        var product = await _context.Products
+        var product = await context.Products
             .Include(p => p.Category)
             .FirstOrDefaultAsync(m => m.Id == id);
         
@@ -60,7 +51,7 @@ public class EditModel : PageModel
             CategoryId = product.CategoryId
         };
         
-        CategorySelectList = new SelectList(await _context.Categories.ToListAsync(), "Id", "Name", Product.CategoryId);
+        CategorySelectList = new SelectList(await context.Categories.ToListAsync(), "Id", "Name", Product.CategoryId);
         
         return Page();
     }
@@ -73,15 +64,15 @@ public class EditModel : PageModel
             {
                 foreach (var error in modelState.Errors) 
                 {
-                    _logger.LogError($"Model State Error: {error.ErrorMessage}");
+                    logger.LogError($"Model State Error: {error.ErrorMessage}");
                 }
             }
 
-            CategorySelectList = new SelectList(await _context.Categories.ToListAsync(), "Id", "Name", EditRequest.CategoryId);
+            CategorySelectList = new SelectList(await context.Categories.ToListAsync(), "Id", "Name", EditRequest.CategoryId);
             return Page();
         }
 
-        var productToUpdate = await _context.Products.FindAsync(EditRequest.Id);
+        var productToUpdate = await context.Products.FindAsync(EditRequest.Id);
 
         if (productToUpdate == null)
         {
@@ -93,7 +84,7 @@ public class EditModel : PageModel
 
         try
         {
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -112,6 +103,6 @@ public class EditModel : PageModel
 
     private bool ProductExists(int id)
     {
-        return _context.Products.Any(e => e.Id == id);
+        return context.Products.Any(e => e.Id == id);
     }
 }

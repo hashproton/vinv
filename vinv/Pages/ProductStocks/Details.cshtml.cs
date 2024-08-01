@@ -4,15 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace vinv.Pages.ProductStocks;
 
-public class DetailsModel : PageModel
+public class DetailsModel(AppDbContext context) : PageModel
 {
-    private readonly AppDbContext _context;
-
-    public DetailsModel(AppDbContext context)
-    {
-        _context = context;
-    }
-
     public Entities.ProductStock ProductStock { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? id)
@@ -22,7 +15,7 @@ public class DetailsModel : PageModel
             return NotFound();
         }
 
-        var productStock = await _context.ProductStocks
+        var productStock = await context.ProductStocks
             .Include(ps => ps.Product)
             .FirstOrDefaultAsync(m => m.Id == id);
 

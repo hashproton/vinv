@@ -21,17 +21,8 @@ public class CreateProductStockRequest
     public int ProductId { get; set; }
 }
 
-public class CreateModel : PageModel
+public class CreateModel(AppDbContext context, ILogger<CreateModel> logger) : PageModel
 {
-    private readonly AppDbContext _context;
-    private readonly ILogger<CreateModel> _logger;
-
-    public CreateModel(AppDbContext context, ILogger<CreateModel> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
-
     [BindProperty]
     public CreateProductStockRequest CreateRequest { get; set; } = default!;
 
@@ -60,16 +51,16 @@ public class CreateModel : PageModel
                 ProductId = CreateRequest.ProductId
             };
 
-            _context.ProductStocks.Add(productStock);
-            await _context.SaveChangesAsync();
+            context.ProductStocks.Add(productStock);
+            await context.SaveChangesAsync();
 
-            _logger.LogInformation("Created new product stock for ProductId {ProductId}", productStock.ProductId);
+            logger.LogInformation("Created new product stock for ProductId {ProductId}", productStock.ProductId);
 
             return RedirectToPage("./Index");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while creating a new product stock");
+            logger.LogError(ex, "An error occurred while creating a new product stock");
             ModelState.AddModelError(string.Empty, "An error occurred while creating the product stock. Please try again.");
             await PopulateProductOptionsAsync();
             return Page();
@@ -78,7 +69,7 @@ public class CreateModel : PageModel
 
     private async Task PopulateProductOptionsAsync()
     {
-        var products = await _context.Products.ToListAsync();
+        var products = await context.Products.ToListAsync();
         ProductOptions = new SelectList(products, "Id", "Name");
     }
 }

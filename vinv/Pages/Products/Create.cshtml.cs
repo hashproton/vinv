@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using vinv.Entities;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,17 +18,8 @@ public class CreateProductRequest
     public int CategoryId { get; set; }
 }
 
-public class CreateModel : PageModel
+public class CreateModel(AppDbContext context, ILogger<CreateModel> logger) : PageModel
 {
-    private readonly AppDbContext _context;
-    private readonly ILogger<CreateModel> _logger;
-
-    public CreateModel(AppDbContext context, ILogger<CreateModel> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
-
     [BindProperty]
     public CreateProductRequest CreateProductRequest { get; set; } = default!;
 
@@ -57,16 +47,16 @@ public class CreateModel : PageModel
                 CategoryId = CreateProductRequest.CategoryId,
             };
 
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
+            context.Products.Add(product);
+            await context.SaveChangesAsync();
             
-            _logger.LogInformation("Created new product with ID {ProductId}", product.Id);
+            logger.LogInformation("Created new product with ID {ProductId}", product.Id);
             
             return RedirectToPage("./Index");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "An error occurred while creating a new product");
+            logger.LogError(ex, "An error occurred while creating a new product");
             ModelState.AddModelError(string.Empty, "An error occurred while creating the product. Please try again.");
             await PopulateCategoryOptionsAsync();
             return Page();
@@ -75,7 +65,7 @@ public class CreateModel : PageModel
 
     private async Task PopulateCategoryOptionsAsync()
     {
-        var categories = await _context.Categories.ToListAsync();
+        var categories = await context.Categories.ToListAsync();
         CategoryOptions = new SelectList(categories, "Id", "Name");
     }
 }
