@@ -10,7 +10,7 @@ namespace Infra.Extensions.DependencyInjection
     public class DatabaseConfiguration
     {
         [Required]
-        public string ConnectionString { get; set; }
+        public string ConnectionString { get; set; } = null!;
     }
     public static class DbContextDependencyInjection
     {

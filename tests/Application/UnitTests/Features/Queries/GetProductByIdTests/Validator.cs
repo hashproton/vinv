@@ -30,7 +30,7 @@ namespace Application.UnitTests.Features.Queries.GetProductByIdTests
         [TestMethod]
         public async Task Should_have_error_when_product_not_found()
         {
-            _productsRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Product)null);
+            _productsRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Product?)null);
 
             var query = new GetProductById.Query { Id = 1 };
             var result = await _validator.TestValidateAsync(query);

@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using Application.Repositories;
+using FluentValidation;
 using MediatR;
-using Application.Repositories;
 
 namespace Application.Features.Commands.UpdateProduct
 {
@@ -9,7 +9,9 @@ namespace Application.Features.Commands.UpdateProduct
         public class Command : IRequest<bool>
         {
             public int Id { get; set; }
-            public string Name { get; set; }
+
+            public string Name { get; set; } = null!;
+
             public int CategoryId { get; set; }
         }
 

@@ -1,19 +1,12 @@
 ﻿using Application.Features.Commands.CreateCategory;
 using FluentValidation.TestHelper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Application.UnitTests.Features.Commands.CreateCategoryTests
 {
     [TestClass]
     public class CreateCategoryValidatorTests
     {
-        private CreateCategory.Validator _validator;
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            _validator = new CreateCategory.Validator();
-        }
+        private readonly CreateCategory.Validator _validator = new();
 
         [TestMethod]
         public void ShouldHaveErrorWhenNameIsEmpty()

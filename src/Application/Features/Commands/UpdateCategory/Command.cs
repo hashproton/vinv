@@ -11,7 +11,8 @@ namespace Application.Features.Commands.UpdateCategory
         public class Command : IRequest<Result>
         {
             public int Id { get; set; }
-            public string Name { get; set; }
+
+            public string Name { get; set; } = null!;
         }
 
         public class Validator : AbstractValidator<Command>

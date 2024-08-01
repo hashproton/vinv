@@ -32,7 +32,7 @@ namespace Application.UnitTests.Features.Commands.UpdateProductTests
         [TestMethod]
         public async Task Should_have_error_when_product_not_found()
         {
-            _productsRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Product)null);
+            _productsRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Product?)null);
 
             var command = new UpdateProduct.Command { Id = 1, Name = "Test", CategoryId = 1 };
             var result = await _validator.TestValidateAsync(command);
@@ -77,7 +77,7 @@ namespace Application.UnitTests.Features.Commands.UpdateProductTests
         [TestMethod]
         public async Task Should_have_error_when_category_not_found()
         {
-            _categoriesRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Category)null);
+            _categoriesRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Category?)null);
 
             var command = new UpdateProduct.Command { Id = 1, Name = "Test", CategoryId = 1 };
             var result = await _validator.TestValidateAsync(command);

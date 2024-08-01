@@ -9,10 +9,9 @@ namespace Application.Features.Commands.CreateCategory
 {
     public static class CreateCategory
     {
-
         public class Command : IRequest<Result<int>>
         {
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
         }
 
         public class Validator : AbstractValidator<Command>

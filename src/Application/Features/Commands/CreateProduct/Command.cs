@@ -9,7 +9,7 @@ namespace Application.Features.Commands.CreateProduct
     {
         public class Command : IRequest<int>
         {
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
             public int CategoryId { get; set; }
         }
 

@@ -1,19 +1,12 @@
 ﻿using Application.Features.Commands.UpdateCategory;
 using FluentValidation.TestHelper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Application.UnitTests.Features.Commands.UpdateCategoryTests
 {
     [TestClass]
     public class UpdateCategoryValidatorTests
     {
-        private UpdateCategory.Validator _validator;
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            _validator = new UpdateCategory.Validator();
-        }
+        private readonly UpdateCategory.Validator _validator = new();
 
         [TestMethod]
         public void ShouldHaveErrorWhenIdIsZero()

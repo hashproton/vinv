@@ -3,10 +3,10 @@ using Application.Features.Commands.UpdateCategory;
 using Application.Features.Commands.DeleteCategory;
 using Application.Features.Queries.GetCategoryById;
 using MediatR;
-using Api.Extensions;
+using Presentation.Api.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Endpoints
+namespace Presentation.Api.Endpoints
 {
     public static class CategoryEndpoints
     {

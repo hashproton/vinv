@@ -9,14 +9,12 @@ namespace Application.UnitTests.Features.Commands.CreateProductTests
     [TestClass]
     public class CreateProductValidator
     {
-        private ICategoriesRepository _categoriesRepository;
-        private CreateProduct.Validator _validator;
+        private ICategoriesRepository _categoriesRepository = Substitute.For<ICategoriesRepository>();
+        private readonly CreateProduct.Validator _validator;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public CreateProductValidator()
         {
-            _categoriesRepository = Substitute.For<ICategoriesRepository>();
-            _validator = new CreateProduct.Validator(_categoriesRepository);
+            _validator = new(_categoriesRepository);
         }
 
         [TestMethod]
@@ -46,7 +44,7 @@ namespace Application.UnitTests.Features.Commands.CreateProductTests
         [TestMethod]
         public async Task Should_have_error_when_category_not_found()
         {
-            _categoriesRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Category)null);
+            _categoriesRepository.GetByIdAsync(Arg.Any<int>(), Arg.Any<CancellationToken>()).Returns((Category?)null);
 
             var command = new CreateProduct.Command { Name = "Test", CategoryId = 1 };
             var result = await _validator.TestValidateAsync(command);

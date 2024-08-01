@@ -1,19 +1,12 @@
 ﻿using Application.Features.Queries.GetCategoryById;
 using FluentValidation.TestHelper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Application.UnitTests.Features.Queries.GetCategoryByIdTests
 {
     [TestClass]
     public class GetCategoryByIdValidatorTests
     {
-        private GetCategoryById.Validator _validator;
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            _validator = new GetCategoryById.Validator();
-        }
+        private readonly GetCategoryById.Validator _validator = new();
 
         [TestMethod]
         public void ShouldHaveErrorWhenIdIsZero()

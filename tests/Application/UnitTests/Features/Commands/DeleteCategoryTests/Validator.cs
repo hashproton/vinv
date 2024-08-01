@@ -1,19 +1,12 @@
 ﻿using Application.Features.Commands.DeleteCategory;
 using FluentValidation.TestHelper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Application.UnitTests.Features.Commands.DeleteCategoryTests
 {
     [TestClass]
     public class DeleteCategoryValidatorTests
     {
-        private DeleteCategory.Validator _validator;
-
-        [TestInitialize]
-        public void SetUp()
-        {
-            _validator = new DeleteCategory.Validator();
-        }
+        private readonly DeleteCategory.Validator _validator = new();
 
         [TestMethod]
         public void ShouldHaveErrorWhenIdIsZero()

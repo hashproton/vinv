@@ -2,7 +2,6 @@
 using FluentValidation;
 using Infra.Errors;
 using MediatR;
-using System;
 
 namespace Infra.Pipelines
 {

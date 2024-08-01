@@ -1,6 +1,6 @@
 ﻿using Application.Shared;
 
-namespace Api.Extensions
+namespace Presentation.Api.Extensions
 {
     public static class ResultExtensions
     {
