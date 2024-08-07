@@ -22,9 +22,9 @@ public class Result : ResultBase
 
     public static Result Success() => new(null);
 
-    public static Result Failure(Error error) => new(error);
-
     public static Result<T> Success<T>(T value) => Result<T>.Success(value);
+
+    public static Result Failure(Error error) => new(error);
 
     public static Result<T> Failure<T>(Error error) => Result<T>.Failure(error);
 }
