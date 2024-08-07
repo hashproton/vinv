@@ -6,36 +6,39 @@ using Presentation.Api.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
 
 var isDevelopmentOrTest = builder.Environment.IsDevelopment() || builder.Environment.IsTest();
-
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: isDevelopmentOrTest, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: !isDevelopmentOrTest, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
+        optional: !isDevelopmentOrTest,
+        reloadOnChange: true)
     .AddEnvironmentVariables()
-    .AddUserSecrets(typeof(Presentation.Api.Program).Assembly, optional: true)
+    .AddUserSecrets(typeof(Program).Assembly, optional: true)
     .AddCommandLine(args);
 
-builder.Services.AddInfra(builder.Configuration);
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.CustomSchemaIds(type =>
+builder.Services
+    .AddInfra(builder.Configuration)
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen(c =>
     {
-        var fullName = type.FullName;
-        if (type.IsNested)
+        c.CustomSchemaIds(type =>
         {
-            return type.DeclaringType?.Name;
-        }
+            var fullName = type.FullName;
+            if (type.IsNested)
+            {
+                return type.DeclaringType?.Name;
+            }
 
-        return fullName;
-    });
-});
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            return fullName;
+        });
+    })
+    .AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
 
-app.UseExceptionHandler(_ => { });
+app.UseExceptionHandler(_ =>
+{
+});
 
 if (app.Environment.IsDevelopment())
 {
@@ -45,11 +48,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapCategoryEndpoints();
+app
+    .MapCategoryEndpoints()
+    .MapProductEndpoints();
 
 app.Run();
 
-namespace Presentation.Api
-{
-    public partial class Program;
-}
+public partial class Program;

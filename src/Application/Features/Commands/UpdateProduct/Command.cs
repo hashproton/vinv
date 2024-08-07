@@ -43,7 +43,7 @@ public static class UpdateProduct
                 return Result.Failure(ProductErrors.NotFoundById(request.Id));
             }
 
-            if (categoriesRepository.GetByIdAsync(request.CategoryId, cancellationToken) == null)
+            if (await categoriesRepository.GetByIdAsync(request.CategoryId, cancellationToken) == null)
             {
                 return Result.Failure(CategoryErrors.NotFoundById(request.CategoryId));
             }

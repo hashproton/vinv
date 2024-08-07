@@ -36,7 +36,7 @@ public static class GetProductById
             {
                 Id = product.Id,
                 Name = product.Name,
-                CategoryId = product.CategoryId
+                CategoryId = product.CategoryId,
             });
         }
     }

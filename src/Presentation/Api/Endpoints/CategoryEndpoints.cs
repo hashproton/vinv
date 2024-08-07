@@ -10,7 +10,7 @@ namespace Presentation.Api.Endpoints;
 
 public static class CategoryEndpoints
 {
-    public static void MapCategoryEndpoints(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder MapCategoryEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/categories").WithTags("Categories");
 
@@ -37,6 +37,8 @@ public static class CategoryEndpoints
             .WithName("DeleteCategory")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
+        
+        return app;
     }
 
     private static async Task<IResult> CreateCategory(IMediator mediator, [FromBody] CreateCategory.Command command)

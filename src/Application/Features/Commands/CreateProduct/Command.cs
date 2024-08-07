@@ -36,12 +36,12 @@ public static class CreateProduct
         {
             if (await productsRepository.GetByNameAsync(request.Name, cancellationToken) != null)
             {
-                return Result<int>.Failure(ProductErrors.AlreadyExists(request.Name));
+                return Result.Failure<int>(ProductErrors.AlreadyExists(request.Name));
             }
 
             if (await categoriesRepository.GetByIdAsync(request.CategoryId, cancellationToken) == null)
             {
-                return Result<int>.Failure(CategoryErrors.NotFoundById(request.CategoryId));
+                return Result.Failure<int>(CategoryErrors.NotFoundById(request.CategoryId));
             }
 
             var product = new Product

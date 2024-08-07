@@ -4,7 +4,7 @@ namespace Domain;
 
 public sealed class Category : BaseEntity
 {
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
-    public List<Product> Products { get; set; }
+    public List<Product>? Products { get; set; }
 }

@@ -13,6 +13,7 @@ public abstract class BaseIntegrationTest : IAsyncDisposable
 
     protected HttpClient Client { get; private set; } = null!;
     protected ICategoriesRepository CategoriesRepository => GetScopedService<ICategoriesRepository>();
+    protected IProductsRepository ProductsRepository => GetScopedService<IProductsRepository>();
 
 
     private TService GetScopedService<TService>() where TService : notnull
