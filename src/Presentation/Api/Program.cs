@@ -4,6 +4,14 @@ using Presentation.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .AddUserSecrets(typeof(Program).Assembly, optional: true)
+    .AddCommandLine(args);
+
 builder.Services.AddInfra(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();

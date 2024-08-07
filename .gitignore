@@ -1,8 +1,9 @@
-# Rider
+# IDE - Rider
 .idea/
 *.sln.iml
 
-# User-specific files
+# IDE - Visual Studio
+.vs/
 *.suo
 *.user
 *.userosscache
@@ -15,24 +16,19 @@
 [Rr]eleases/
 x64/
 x86/
-build/
-bld/
 [Bb]in/
 [Oo]bj/
 [Oo]ut/
-msbuild.log
-msbuild.err
-msbuild.wrn
-
-# Visual Studio 2015/2017 cache/options directory
-.vs/
+build/
+bld/
+[Bb]uild[Ll]og.*
 
 # .NET Core
 project.lock.json
 project.fragment.lock.json
 artifacts/
 
-# Files built by Visual Studio
+# Visual Studio generated files
 *_i.c
 *_p.c
 *_h.h
@@ -61,44 +57,38 @@ artifacts/
 *.svclog
 *.scc
 
-# NuGet Packages
+# NuGet
 *.nupkg
-# NuGet Symbol Packages
 *.snupkg
-# The packages folder can be ignored because of Package Restore
 **/[Pp]ackages/*
-# except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
-# Uncomment if necessary however generally it will be regenerated when needed
-#!**/[Pp]ackages/repositories.config
-# NuGet v3's project.json files produces more ignorable files
 *.nuget.props
 *.nuget.targets
 
-# ReSharper is a .NET coding add-in
+# ReSharper
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
-# Rider
-.idea/
-
-# Visual Studio code coverage results
+# Code coverage
 *.coverage
 *.coveragexml
 
-# Click-Once directory
+# Publish directories and files
 publish/
-
-# Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# Note: Comment the next line if you want to checkin your web deploy settings,
-# but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
-
-# Microsoft Azure Web App publish settings. Comment the next line if you want to
-# checkin your Azure Web App publish settings, but sensitive information contained
-# in these scripts will be unencrypted
 PublishScripts/
+
+# Application settings
+appsettings.json
+appsettings.*.json
+!appsettings.template.json
+!appsettings.test.json
+
+# Misc
+msbuild.log
+msbuild.err
+msbuild.wrn
