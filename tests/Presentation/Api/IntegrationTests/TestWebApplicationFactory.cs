@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Presentation.Api.IntegrationTests;
 
-public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
+public class TestWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {

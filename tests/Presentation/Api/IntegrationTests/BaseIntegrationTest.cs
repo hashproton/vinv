@@ -7,7 +7,7 @@ namespace Presentation.Api.IntegrationTests;
 [TestClass]
 public abstract class BaseIntegrationTest : IAsyncDisposable
 {
-    private readonly TestWebApplicationFactory<Program> _factory = new();
+    private readonly TestWebApplicationFactory _factory = new();
     private IServiceScope? _scope;
     private AppDbContext Context => GetScopedService<AppDbContext>();
 
