@@ -1,5 +1,7 @@
-﻿using Application.Features.Commands.CreateCategory;
+﻿using Application.Features.Commands.AddProductToCategory;
+using Application.Features.Commands.CreateCategory;
 using Application.Features.Commands.DeleteCategory;
+using Application.Features.Commands.RemoveProductFromCategory;
 using Application.Features.Commands.UpdateCategory;
 using Application.Features.Queries.GetCategoryById;
 using MediatR;
@@ -38,6 +40,20 @@ public static class CategoryEndpoints
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
         
+        group.MapPost("/{categoryId}/products/{productId}", AddProductToCategory)
+            .WithName("AddProductToCategory")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesValidationProblem()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound);
+        
+        group.MapDelete("/{categoryId}/products/{productId}", RemoveProductFromCategory)
+            .WithName("RemoveProductFromCategory")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesValidationProblem()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound);
+        
         return app;
     }
 
@@ -65,6 +81,20 @@ public static class CategoryEndpoints
     private static async Task<IResult> DeleteCategory(IMediator mediator, [FromRoute] int id)
     {
         var command = new DeleteCategory.Command { Id = id };
+        var result = await mediator.Send(command);
+        return result.IsSuccess ? Results.NoContent() : result.MapError();
+    }
+    
+    private static async Task<IResult> AddProductToCategory(IMediator mediator, [FromRoute] int categoryId, [FromRoute] int productId)
+    {
+        var command = new AddProductToCategory.Command { CategoryId = categoryId, ProductId = productId };
+        var result = await mediator.Send(command);
+        return result.IsSuccess ? Results.NoContent() : result.MapError();
+    }
+    
+    private static async Task<IResult> RemoveProductFromCategory(IMediator mediator, [FromRoute] int categoryId, [FromRoute] int productId)
+    {
+        var command = new RemoveProductFromCategory.Command { CategoryId = categoryId, ProductId = productId };
         var result = await mediator.Send(command);
         return result.IsSuccess ? Results.NoContent() : result.MapError();
     }

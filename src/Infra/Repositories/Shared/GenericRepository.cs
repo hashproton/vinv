@@ -25,7 +25,7 @@ public class GenericRepository<TEntity>(
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken) => await context.FindAsync<TEntity>(id, cancellationToken);
+    public virtual async Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken) => await context.FindAsync<TEntity>(id, cancellationToken);
 
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
