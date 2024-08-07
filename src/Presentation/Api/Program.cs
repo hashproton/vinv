@@ -1,6 +1,6 @@
 using Infra;
 using Presentation.Api;
-using Presentation.Api.Api.Endpoints;
+using Presentation.Api.Endpoints;
 using Presentation.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +12,7 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: isDevelopmentOrTest, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: !isDevelopmentOrTest, reloadOnChange: true)
     .AddEnvironmentVariables()
-    .AddUserSecrets(typeof(Program).Assembly, optional: true)
+    .AddUserSecrets(typeof(Presentation.Api.Program).Assembly, optional: true)
     .AddCommandLine(args);
 
 builder.Services.AddInfra(builder.Configuration);
@@ -49,4 +49,7 @@ app.MapCategoryEndpoints();
 
 app.Run();
 
-public partial class Program;
+namespace Presentation.Api
+{
+    public partial class Program;
+}

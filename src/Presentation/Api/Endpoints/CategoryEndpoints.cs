@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Api.Extensions;
 
-namespace Presentation.Api.Api.Endpoints;
+namespace Presentation.Api.Endpoints;
 
 public static class CategoryEndpoints
 {
