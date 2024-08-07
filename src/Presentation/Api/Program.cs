@@ -1,5 +1,5 @@
-using Presentation.Api.Endpoints;
 using Infra;
+using Presentation.Api.Api.Endpoints;
 using Presentation.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);

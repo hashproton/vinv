@@ -4,49 +4,48 @@ using Application.Shared;
 using FluentValidation;
 using MediatR;
 
-namespace Application.Features.Queries.GetCategoryById
+namespace Application.Features.Queries.GetCategoryById;
+
+public static class GetCategoryById
 {
-    public static class GetCategoryById
+    public class Query : IRequest<Result<CategoryDto>>
     {
-        public class Query : IRequest<Result<CategoryDto>>
-        {
-            public int Id { get; set; }
-        }
+        public int Id { get; set; }
+    }
 
-        public class Validator : AbstractValidator<Query>
+    public class Validator : AbstractValidator<Query>
+    {
+        public Validator()
         {
-            public Validator()
+            RuleFor(c => c.Id)
+                .GreaterThan(0);
+        }
+    }
+
+    public class Handler(ICategoriesRepository categoriesRepository) : IRequestHandler<Query, Result<CategoryDto>>
+    {
+        public async Task<Result<CategoryDto>> Handle(Query request, CancellationToken cancellationToken)
+        {
+            var category = await categoriesRepository.GetByIdAsync(request.Id, cancellationToken);
+            if (category == null)
             {
-                RuleFor(c => c.Id)
-                    .GreaterThan(0);
+                return Result.Failure<CategoryDto>(CategoryErrors.NotFoundById(request.Id));
             }
-        }
 
-        public class Handler(ICategoriesRepository categoriesRepository) : IRequestHandler<Query, Result<CategoryDto>>
-        {
-            public async Task<Result<CategoryDto>> Handle(Query request, CancellationToken cancellationToken)
+            var categoryDto = new CategoryDto
             {
-                var category = await categoriesRepository.GetByIdAsync(request.Id, cancellationToken);
-                if (category == null)
-                {
-                    return Result.Failure<CategoryDto>(CategoryErrors.NotFoundById(request.Id));
-                }
+                Id = category.Id,
+                Name = category.Name
+            };
 
-                var categoryDto = new CategoryDto
-                {
-                    Id = category.Id,
-                    Name = category.Name
-                };
-
-                return Result.Success(categoryDto);
-            }
+            return Result.Success(categoryDto);
         }
+    }
 
-        public class CategoryDto
-        {
-            public required int Id { get; init; }
+    public class CategoryDto
+    {
+        public required int Id { get; init; }
 
-            public required string Name { get; init; }
-        }
+        public required string Name { get; init; }
     }
 }

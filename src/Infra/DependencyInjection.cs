@@ -5,25 +5,24 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infra
+namespace Infra;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddInfra(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddInfra(this IServiceCollection services, IConfiguration configuration)
+        services.AddValidatorsFromAssembly(typeof(Application.AssemblyReference).Assembly);
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        services.AddMediatR(cfg =>
         {
-            services.AddValidatorsFromAssembly(typeof(Application.AssemblyReference).Assembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-            services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssembly(typeof(Application.AssemblyReference).Assembly);
-                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            }); 
+            cfg.RegisterServicesFromAssembly(typeof(Application.AssemblyReference).Assembly);
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        }); 
             
-            services.AddDbContext(configuration);
-            services.AddRepositories();
+        services.AddDbContext(configuration);
+        services.AddRepositories();
 
-            return services;
-        }
+        return services;
     }
 }

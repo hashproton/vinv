@@ -1,10 +1,9 @@
 ﻿using Application.Repositories.Shared;
 using Domain;
 
-namespace Application.Repositories
+namespace Application.Repositories;
+
+public interface ICategoriesRepository : IGenericRepository<Category>
 {
-    public interface ICategoriesRepository : IGenericRepository<Category>
-    {
-        Task<Category?> GetByNameAsync(string name, CancellationToken cancellationToken);
-    }
+    Task<Category?> GetByNameAsync(string name, CancellationToken cancellationToken);
 }

@@ -5,55 +5,54 @@ using Domain;
 using FluentValidation;
 using MediatR;
 
-namespace Application.Features.Commands.CreateProduct
+namespace Application.Features.Commands.CreateProduct;
+
+public static class CreateProduct
 {
-    public static class CreateProduct
+    public class Command : IRequest<Result<int>>
     {
-        public class Command : IRequest<Result<int>>
+        public required string Name { get; init; }
+        public required int CategoryId { get; init; }
+    }
+
+    public class Validator : AbstractValidator<Command>
+    {
+        public Validator()
         {
-            public required string Name { get; init; }
-            public required int CategoryId { get; init; }
+            RuleFor(c => c.Name)
+                .NotEmpty()
+                .MaximumLength(200);
+
+            RuleFor(c => c.CategoryId)
+                .GreaterThan(0);
         }
+    }
 
-        public class Validator : AbstractValidator<Command>
+    public class Handler(
+        IProductsRepository productsRepository,
+        ICategoriesRepository categoriesRepository) : IRequestHandler<Command, Result<int>>
+    {
+        public async Task<Result<int>> Handle(Command request, CancellationToken cancellationToken)
         {
-            public Validator()
+            if (await productsRepository.GetByNameAsync(request.Name, cancellationToken) != null)
             {
-                RuleFor(c => c.Name)
-                    .NotEmpty()
-                    .MaximumLength(200);
-
-                RuleFor(c => c.CategoryId)
-                    .GreaterThan(0);
+                return Result<int>.Failure(ProductErrors.AlreadyExists(request.Name));
             }
-        }
 
-        public class Handler(
-            IProductsRepository productsRepository,
-            ICategoriesRepository categoriesRepository) : IRequestHandler<Command, Result<int>>
-        {
-            public async Task<Result<int>> Handle(Command request, CancellationToken cancellationToken)
+            if (await categoriesRepository.GetByIdAsync(request.CategoryId, cancellationToken) == null)
             {
-                if (await productsRepository.GetByNameAsync(request.Name, cancellationToken) != null)
-                {
-                    return Result<int>.Failure(ProductErrors.AlreadyExists(request.Name));
-                }
-
-                if (await categoriesRepository.GetByIdAsync(request.CategoryId, cancellationToken) == null)
-                {
-                    return Result<int>.Failure(CategoryErrors.NotFoundById(request.CategoryId));
-                }
-
-                var product = new Product
-                {
-                    Name = request.Name,
-                    CategoryId = request.CategoryId
-                };
-
-                await productsRepository.CreateAsync(product, cancellationToken);
-
-                return Result.Success(product.Id);
+                return Result<int>.Failure(CategoryErrors.NotFoundById(request.CategoryId));
             }
+
+            var product = new Product
+            {
+                Name = request.Name,
+                CategoryId = request.CategoryId
+            };
+
+            await productsRepository.CreateAsync(product, cancellationToken);
+
+            return Result.Success(product.Id);
         }
     }
 }

@@ -4,38 +4,37 @@ using Application.Shared;
 using FluentValidation;
 using MediatR;
 
-namespace Application.Features.Commands.DeleteCategory
+namespace Application.Features.Commands.DeleteCategory;
+
+public static class DeleteCategory
 {
-    public static class DeleteCategory
+    public class Command : IRequest<Result>
     {
-        public class Command : IRequest<Result>
+        public required int Id { get; init; }
+    }
+
+    public class Validator : AbstractValidator<Command>
+    {
+        public Validator()
         {
-            public required int Id { get; init; }
+            RuleFor(c => c.Id)
+                .GreaterThan(0);
         }
+    }
 
-        public class Validator : AbstractValidator<Command>
+    public class Handler(ICategoriesRepository categoriesRepository) : IRequestHandler<Command, Result>
+    {
+        public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
         {
-            public Validator()
+            var category = await categoriesRepository.GetByIdAsync(request.Id, cancellationToken);
+            if (category == null)
             {
-                RuleFor(c => c.Id)
-                    .GreaterThan(0);
+                return Result.Failure(CategoryErrors.NotFoundById(request.Id));
             }
-        }
 
-        public class Handler(ICategoriesRepository categoriesRepository) : IRequestHandler<Command, Result>
-        {
-            public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var category = await categoriesRepository.GetByIdAsync(request.Id, cancellationToken);
-                if (category == null)
-                {
-                    return Result.Failure(CategoryErrors.NotFoundById(request.Id));
-                }
+            await categoriesRepository.DeleteAsync(category, cancellationToken);
 
-                await categoriesRepository.DeleteAsync(category, cancellationToken);
-
-                return Result.Success();
-            }
+            return Result.Success();
         }
     }
 }

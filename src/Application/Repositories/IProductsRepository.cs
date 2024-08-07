@@ -1,10 +1,9 @@
 ﻿using Application.Repositories.Shared;
 using Domain;
 
-namespace Application.Repositories
+namespace Application.Repositories;
+
+public interface IProductsRepository : IGenericRepository<Product>
 {
-    public interface IProductsRepository : IGenericRepository<Product>
-    {
-        Task<Product?> GetByNameAsync(string name, CancellationToken cancellationToken);
-    }
+    Task<Product?> GetByNameAsync(string name, CancellationToken cancellationToken);
 }

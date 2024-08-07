@@ -1,12 +1,11 @@
-﻿namespace Application.Shared
+﻿namespace Application.Shared;
+
+public enum ErrorType
 {
-    public enum ErrorType
-    {
-        AlreadyExists,
-        NotFound,
-        ValidationError,
-        Unauthorized,
-        Forbidden,
-        Unknown
-    }
+    AlreadyExists,
+    NotFound,
+    ValidationError,
+    Unauthorized,
+    Forbidden,
+    Unknown
 }
