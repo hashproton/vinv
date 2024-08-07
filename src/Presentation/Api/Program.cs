@@ -1,7 +1,10 @@
+using System.Runtime.CompilerServices;
 using Infra;
 using Presentation.Api;
 using Presentation.Api.Endpoints;
 using Presentation.Api.Middlewares;
+
+[assembly:InternalsVisibleTo("tests.Presentation.Api.IntegrationTests")]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,4 +57,3 @@ app
 
 await app.RunAsync();
 
-public partial class Program;
