@@ -8,8 +8,6 @@ namespace Presentation.Api.Middlewares;
 
 public class GlobalExceptionHandler(IHostEnvironment env, ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
-    private const string UnhandledExceptionMsg = "An unhandled exception has occurred while executing the request.";
-
     private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web)
     {
         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }

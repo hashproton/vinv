@@ -14,27 +14,37 @@ public static class ProductEndpoints
     {
         var group = app.MapGroup("/api/products").WithTags("Products");
 
-        group.MapPost("/", CreateProduct)
+group.MapPost("/", CreateProduct)
             .WithName("CreateProduct")
+            .WithSummary("Creates a new product.")
+            .WithDescription("Creates a new product and assigns it to a category.")
+            .Accepts<CreateProduct.Command>("application/json")
             .Produces<int>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict);
 
-        group.MapGet("/{id}", GetProductById)
+        group.MapGet("/{id:int}", GetProductById)
             .WithName("GetProductById")
-            .Produces<GetProductById.ProductDto>()
+            .WithSummary("Gets a product by ID.")
+            .WithDescription("Retrieves a product by its unique ID.")
+            .Produces<GetProductById.ProductDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
         group.MapPut("/", UpdateProduct)
             .WithName("UpdateProduct")
+            .WithSummary("Updates an existing product.")
+            .WithDescription("Updates an existing product's details including its category.")
+            .Accepts<UpdateProduct.Command>("application/json")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status400BadRequest);
 
-        group.MapDelete("/{id}", DeleteProduct)
+        group.MapDelete("/{id:int}", DeleteProduct)
             .WithName("DeleteProduct")
+            .WithSummary("Deletes a product by ID.")
+            .WithDescription("Deletes a product from the database using its unique ID.")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
     }

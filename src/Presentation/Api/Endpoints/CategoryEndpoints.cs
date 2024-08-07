@@ -18,37 +18,51 @@ public static class CategoryEndpoints
 
         group.MapPost("/", CreateCategory)
             .WithName("CreateCategory")
+            .WithSummary("Creates a new category.")
+            .WithDescription("Creates a new category in the system.")
+            .Accepts<CreateCategory.Command>("application/json")
             .Produces<int>(StatusCodes.Status201Created)
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status409Conflict);
 
-        group.MapGet("/{id}", GetCategoryById)
+        group.MapGet("/{id:int}", GetCategoryById)
             .WithName("GetCategoryById")
-            .Produces<GetCategoryById.CategoryDto>()
+            .WithSummary("Gets a category by ID.")
+            .WithDescription("Retrieves a category by its unique ID.")
+            .Produces<GetCategoryById.CategoryDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
 
         group.MapPut("/", UpdateCategory)
             .WithName("UpdateCategory")
+            .WithSummary("Updates an existing category.")
+            .WithDescription("Updates an existing category's details.")
+            .Accepts<UpdateCategory.Command>("application/json")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status400BadRequest);
 
-        group.MapDelete("/{id}", DeleteCategory)
+        group.MapDelete("/{id:int}", DeleteCategory)
             .WithName("DeleteCategory")
+            .WithSummary("Deletes a category by ID.")
+            .WithDescription("Deletes a category from the system using its unique ID.")
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound);
-        
-        group.MapPost("/{categoryId}/products/{productId}", AddProductToCategory)
+
+        group.MapPost("/{categoryId:int}/products/{productId:int}", AddProductToCategory)
             .WithName("AddProductToCategory")
+            .WithSummary("Adds a product to a category.")
+            .WithDescription("Adds an existing product to an existing category.")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound);
-        
-        group.MapDelete("/{categoryId}/products/{productId}", RemoveProductFromCategory)
+
+        group.MapDelete("/{categoryId:int}/products/{productId:int}", RemoveProductFromCategory)
             .WithName("RemoveProductFromCategory")
+            .WithSummary("Removes a product from a category.")
+            .WithDescription("Removes an existing product from an existing category.")
             .Produces(StatusCodes.Status204NoContent)
             .ProducesValidationProblem()
             .Produces(StatusCodes.Status400BadRequest)
