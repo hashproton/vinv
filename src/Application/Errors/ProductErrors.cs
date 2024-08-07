@@ -2,7 +2,7 @@
 
 namespace Application.Errors;
 
-public class ProductErrors
+public static class ProductErrors
 {
     public static Error AlreadyExists(string name) => Error.Create(ErrorType.AlreadyExists, $"Product with name {name} already exists.");
 

@@ -18,14 +18,14 @@ public class GlobalExceptionHandler(IHostEnvironment env, ILogger<GlobalExceptio
     private readonly IHostEnvironment _env = env ?? throw new ArgumentNullException(nameof(env));
     private readonly ILogger<GlobalExceptionHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-    public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        var problemDetails = CreateProblemDetails(context, exception);
+        var problemDetails = CreateProblemDetails(httpContext, exception);
         var json = ToJson(problemDetails);
 
-        context.Response.ContentType = "application/problem+json";
-        context.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
-        await context.Response.WriteAsync(json, cancellationToken);
+        httpContext.Response.ContentType = "application/problem+json";
+        httpContext.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
+        await httpContext.Response.WriteAsync(json, cancellationToken);
 
         _logger.LogError(exception, "An unhandled exception occurred.");
 

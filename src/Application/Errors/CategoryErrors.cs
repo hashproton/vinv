@@ -2,7 +2,7 @@
 
 namespace Application.Errors;
 
-public class CategoryErrors
+public static class CategoryErrors
 {
     public static Error AlreadyExists(string name) => Error.Create(ErrorType.AlreadyExists, $"Category with name {name} already exists.");
 

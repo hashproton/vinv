@@ -45,7 +45,7 @@ public static class RemoveProductFromCategory
                 return Result.Failure(ProductErrors.NotFoundById(request.ProductId));
             }
 
-            var productToRemove = existingCategory.Products.FirstOrDefault(p => p.Id == existingProduct.Id);
+            var productToRemove = existingCategory.Products.Find(p => p.Id == existingProduct.Id);
             if (productToRemove == null)
             {
                 return Result.Failure(ProductErrors.NotFoundById(request.ProductId));
