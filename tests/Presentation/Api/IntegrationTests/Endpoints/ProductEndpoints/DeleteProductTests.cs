@@ -19,8 +19,6 @@ public class DeleteProductTests : BaseIntegrationTest
         var existingProduct = new Domain.Product { Name = "Product to Delete", CategoryId = existingCategory.Id };
         await ProductsRepository.CreateAsync(existingProduct, default);
 
-        var command = new DeleteProduct.Command { Id = existingProduct.Id };
-
         // Act
         var response = await Client.DeleteAsync($"/api/products/{existingProduct.Id}");
 

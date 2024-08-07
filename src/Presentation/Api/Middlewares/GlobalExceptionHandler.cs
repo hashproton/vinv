@@ -38,7 +38,7 @@ public class GlobalExceptionHandler(IHostEnvironment env, ILogger<GlobalExceptio
             ? context.Response.StatusCode
             : StatusCodes.Status500InternalServerError;
 
-        var reasonPhrase = ReasonPhrases.GetReasonPhrase(statusCode) ?? UnhandledExceptionMsg;
+        var reasonPhrase = ReasonPhrases.GetReasonPhrase(statusCode);
         var problemDetails = new ProblemDetails
         {
             Status = statusCode,

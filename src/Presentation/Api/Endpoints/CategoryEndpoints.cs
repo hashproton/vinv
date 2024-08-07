@@ -25,7 +25,7 @@ public static class CategoryEndpoints
 
         group.MapGet("/{id}", GetCategoryById)
             .WithName("GetCategoryById")
-            .Produces<GetCategoryById.CategoryDto>(StatusCodes.Status200OK)
+            .Produces<GetCategoryById.CategoryDto>()
             .Produces(StatusCodes.Status404NotFound);
 
         group.MapPut("/", UpdateCategory)

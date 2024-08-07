@@ -17,7 +17,7 @@ public class DatabaseConfiguration
     }
 
     [Required]
-    public string ConnectionString { get; set; } = null!;
+    public required string ConnectionString { get; init; }
 
     [Required]
     public DatabaseType Provider { get; set; }

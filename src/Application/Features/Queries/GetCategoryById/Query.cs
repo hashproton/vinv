@@ -10,7 +10,7 @@ public static class GetCategoryById
 {
     public class Query : IRequest<Result<CategoryDto>>
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
     }
 
     public class Validator : AbstractValidator<Query>

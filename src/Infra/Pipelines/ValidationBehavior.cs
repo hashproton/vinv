@@ -32,11 +32,11 @@ public class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TReq
                 var genericArgType = typeof(TResponse).GetGenericArguments()[0];
                 var failureResultMethod = typeof(Result<>)
                     .MakeGenericType(genericArgType)
-                    .GetMethod(nameof(Result<object>.Failure), new[] { typeof(Error) });
+                    .GetMethod(nameof(Result<object>.Failure), [typeof(Error)]);
 
                 if (failureResultMethod != null)
                 {
-                    var failureResult = failureResultMethod.Invoke(null, new object[] { errorType });
+                    var failureResult = failureResultMethod.Invoke(null, [errorType]);
                     return failureResult as TResponse ?? throw new InvalidOperationException("Failed to create failure Result<T>.");
                 }
                 else

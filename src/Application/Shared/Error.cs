@@ -2,9 +2,9 @@
 
 public class Error
 {
-    public ErrorType Type { get; set; }
+    public ErrorType Type { get; init; }
 
-    public string Description { get; set; }
+    public string Description { get; init; }
 
     private Error(ErrorType type, string description)
     {
@@ -12,5 +12,5 @@ public class Error
         Description = description;
     }
 
-    public static Error Create(ErrorType type, string description) => new Error(type, description);
+    public static Error Create(ErrorType type, string description) => new(type, description);
 }

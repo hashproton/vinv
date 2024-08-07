@@ -10,7 +10,7 @@ public static class GetProductById
 {
     public class Query : IRequest<Result<ProductDto>>
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
     }
 
     public class Validator : AbstractValidator<Query>

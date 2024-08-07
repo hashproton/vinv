@@ -23,7 +23,7 @@ public static class ResultExtensions
     private static IResult MapErrorInternal(Error error)
     {
         var statusCode = GetStatusCode(error.Type);
-        var reasonPhrase = ReasonPhrases.GetReasonPhrase(statusCode) ?? "An error occurred";
+        var reasonPhrase = ReasonPhrases.GetReasonPhrase(statusCode);
 
         var problemDetails = new ProblemDetails
         {

@@ -23,7 +23,7 @@ public static class ProductEndpoints
 
         group.MapGet("/{id}", GetProductById)
             .WithName("GetProductById")
-            .Produces<GetProductById.ProductDto>(StatusCodes.Status200OK)
+            .Produces<GetProductById.ProductDto>()
             .Produces(StatusCodes.Status404NotFound);
 
         group.MapPut("/", UpdateProduct)
