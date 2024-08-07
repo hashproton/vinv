@@ -4,7 +4,7 @@ using Presentation.Api;
 using Presentation.Api.Endpoints;
 using Presentation.Api.Middlewares;
 
-[assembly:InternalsVisibleTo("tests.Presentation.Api.IntegrationTests")]
+[assembly: InternalsVisibleTo("tests.Presentation.Api.IntegrationTests")]
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +37,8 @@ builder.Services
     })
     .AddExceptionHandler<GlobalExceptionHandler>();
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 app.UseExceptionHandler(_ =>
@@ -45,6 +47,11 @@ app.UseExceptionHandler(_ =>
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors(b => b
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -56,4 +63,3 @@ app
     .MapProductEndpoints();
 
 await app.RunAsync();
-
