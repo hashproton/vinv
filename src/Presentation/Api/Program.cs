@@ -1,13 +1,16 @@
 using Infra;
+using Presentation.Api;
 using Presentation.Api.Api.Endpoints;
 using Presentation.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var isDevelopmentOrTest = builder.Environment.IsDevelopment() || builder.Environment.IsTest();
+
 builder.Configuration
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.json", optional: isDevelopmentOrTest, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: !isDevelopmentOrTest, reloadOnChange: true)
     .AddEnvironmentVariables()
     .AddUserSecrets(typeof(Program).Assembly, optional: true)
     .AddCommandLine(args);
