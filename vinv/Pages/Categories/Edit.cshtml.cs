@@ -15,10 +15,8 @@ public class CategoryEditRequest
     public string Name { get; set; }
 }
 
-public class EditModel(vinv.AppDbContext context) : PageModel
+public class EditModel(AppDbContext context) : PageModel
 {
-    private readonly vinv.AppDbContext _context = context;
-
     [BindProperty]
     public CategoryEditRequest CategoryEditRequest { get; set; } = default!;
 
@@ -29,7 +27,7 @@ public class EditModel(vinv.AppDbContext context) : PageModel
             return NotFound();
         }
 
-        var category =  await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
+        var category =  await context.Categories.FirstOrDefaultAsync(m => m.Id == id);
         if (category == null)
         {
             return NotFound();
@@ -55,12 +53,12 @@ public class EditModel(vinv.AppDbContext context) : PageModel
 
         try
         {
-            _context.Categories.Update(new()
+            context.Categories.Update(new()
             {
                 Id = CategoryEditRequest.Id,
                 Name = CategoryEditRequest.Name
             });
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -79,6 +77,6 @@ public class EditModel(vinv.AppDbContext context) : PageModel
 
     private bool CategoryExists(int id)
     {
-        return _context.Categories.Any(e => e.Id == id);
+        return context.Categories.Any(e => e.Id == id);
     }
 }

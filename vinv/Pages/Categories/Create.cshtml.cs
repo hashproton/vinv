@@ -8,7 +8,7 @@ public class CategoryRequest
 {
     [Required]
     [StringLength(100)]
-    public string Name { get; set; }
+    public string Name { get; init; } = null!;
 }
 public class CreateModel(AppDbContext context) : PageModel
 {

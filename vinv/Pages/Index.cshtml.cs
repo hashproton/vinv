@@ -30,7 +30,7 @@ public class IndexModel(AppDbContext context, IConfiguration configuration) : Pa
 
         if (lowStockProducts.Any())
         {
-            var shoppingCart = new Entities.ShoppingCart
+            var shoppingCart = new ShoppingCart
             {
                 ProductStocks = lowStockProducts
             };

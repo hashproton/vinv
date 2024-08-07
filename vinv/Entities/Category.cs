@@ -1,10 +1,14 @@
-﻿namespace vinv.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace vinv.Entities;
 
 public class Category
 {
-    public int Id { get; set; }
+    [Key]
+    public int Id { get; init; }
 
-    public string Name { get; set; }
+    [StringLength(100)]
+    public string Name { get; init; } = null!;
 
-    public List<Product> Products { get; set; }
+    public List<Product> Products { get; init; } = [];
 }

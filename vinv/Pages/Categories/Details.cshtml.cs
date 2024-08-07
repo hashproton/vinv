@@ -5,9 +5,9 @@ using vinv.Entities;
 
 namespace vinv.Pages.Categories;
 
-public class DetailsModel(vinv.AppDbContext context) : PageModel
+public class DetailsModel(AppDbContext context) : PageModel
 {
-    private readonly vinv.AppDbContext _context = context;
+    private readonly AppDbContext _context = context;
 
     public Category Category { get; set; } = default!;
 
