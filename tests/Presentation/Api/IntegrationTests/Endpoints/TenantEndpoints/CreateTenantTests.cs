@@ -1,9 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Json;
-using Application.Features.Commands.CreateTenant;
-using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
+﻿using Application.Features.Commands.CreateTenant;
 
 namespace Presentation.Api.IntegrationTests.Endpoints.TenantEndpoints;
 
@@ -14,7 +9,11 @@ public class CreateTenantTests : BaseIntegrationTest
     public async Task ShouldReturnCreatedResult_WhenTenantIsNew()
     {
         // Arrange
-        var command = new CreateTenant.Command { Name = "Test Tenant" };
+        var command = new CreateTenant.Command
+        {
+            Name = "Test Tenant",
+            Status = TenantStatus.Demo
+        };
 
         // Act
         var response = await Client.PostAsJsonAsync(Shared.Endpoints.Base, command);
@@ -28,13 +27,14 @@ public class CreateTenantTests : BaseIntegrationTest
         var tenant = await TenantsRepository.GetByIdAsync(responseData.Id, default);
         tenant.Should().NotBeNull();
         tenant!.Name.Should().Be("Test Tenant");
+        tenant.Status.Should().Be(TenantStatus.Demo);
     }
 
     [TestMethod]
     public async Task ShouldReturnConflict_WhenTenantAlreadyExists()
     {
         // Arrange
-        var existingTenant = new Domain.Tenant { Name = "Existing Tenant" };
+        var existingTenant = new Tenant { Name = "Existing Tenant" };
         await TenantsRepository.CreateAsync(existingTenant, default);
 
         var command = new CreateTenant.Command { Name = "Existing Tenant" };

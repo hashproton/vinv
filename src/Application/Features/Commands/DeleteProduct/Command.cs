@@ -1,10 +1,4 @@
-﻿using Application.Errors;
-using Application.Repositories;
-using Application.Shared;
-using FluentValidation;
-using MediatR;
-
-namespace Application.Features.Commands.DeleteProduct;
+﻿namespace Application.Features.Commands.DeleteProduct;
 
 public static class DeleteProduct
 {

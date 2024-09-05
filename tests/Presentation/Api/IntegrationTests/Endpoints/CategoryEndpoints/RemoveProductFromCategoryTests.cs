@@ -1,9 +1,4 @@
-﻿using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
-using System.Net;
-
-namespace Presentation.Api.IntegrationTests.Endpoints.CategoryEndpoints;
+﻿namespace Presentation.Api.IntegrationTests.Endpoints.CategoryEndpoints;
 
 [TestClass]
 public class RemoveProductFromCategoryTests : BaseIntegrationTest

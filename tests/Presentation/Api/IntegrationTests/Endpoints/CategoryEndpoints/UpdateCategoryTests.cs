@@ -1,9 +1,4 @@
 ﻿using Application.Features.Commands.UpdateCategory;
-using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace Presentation.Api.IntegrationTests.Endpoints.CategoryEndpoints;
 

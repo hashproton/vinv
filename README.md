@@ -51,3 +51,29 @@ To run the necessary services, use the `docker-compose.yml` file located in the 
 ```bash
 docker compose up -d
 ```
+
+Here’s how you can integrate those examples into the "Testing" section of the `README.md`:
+
+## Testing
+
+### Test Naming Convention
+
+All tests in this project follow the naming pattern:
+
+```plaintext
+ShouldExpectedBehavior_WhenCondition
+```
+
+This ensures that each test is descriptive and clear, specifying:
+
+- **Expected Behavior**: What the method or function should do.
+- **Condition**: Under what condition the expected behavior occurs.
+
+### Examples
+
+- `ShouldNotHaveValidationErrors_WhenCommandIsValid()`: Verifies that there are no validation errors when a command is valid.
+- `ShouldHaveErrorForName_WhenNameIsEmpty()`: Checks that an error occurs when the `Name` field is empty.
+- `ShouldHaveErrorForStatus_WhenStatusIsOutOfEnumRange()`: Ensures an error is returned when the `Status` is outside the allowed enumeration range.
+- `ShouldReturnConflict_WhenTenantAlreadyExists()`: Verifies that a conflict (HTTP 409) response is returned when attempting to create a tenant that already exists.
+
+This test naming convention ensures that tests are readable, consistent, and self-explanatory.

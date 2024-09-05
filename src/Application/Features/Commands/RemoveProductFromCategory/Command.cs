@@ -1,10 +1,4 @@
-﻿using Application.Errors;
-using Application.Repositories;
-using Application.Shared;
-using FluentValidation;
-using MediatR;
-
-namespace Application.Features.Commands.RemoveProductFromCategory;
+﻿namespace Application.Features.Commands.RemoveProductFromCategory;
 
 public static class RemoveProductFromCategory
 {

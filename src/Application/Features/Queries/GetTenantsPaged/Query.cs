@@ -1,9 +1,5 @@
 ﻿using Application.Features.Queries.Shared;
-using Application.Repositories;
 using Application.Repositories.Shared;
-using Application.Shared;
-using FluentValidation;
-using MediatR;
 
 namespace Application.Features.Queries.GetTenantsPaged;
 

@@ -70,12 +70,10 @@ public static class DbContextDependencyInjection
             throw new InvalidOperationException($"Connection string for {dbConfig.Provider} is missing or empty.");
         }
 
-        var test = InfraReference.Assembly.GetName().Name;
-
         return dbConfig.Provider switch
         {
-            DatabaseConfiguration.DatabaseType.Postgres => options.UseNpgsql(connectionString, b => b.MigrationsAssembly(InfraReference.Assembly.GetName().Name)),
-            DatabaseConfiguration.DatabaseType.Sqlite => options.UseSqlite(connectionString, b => b.MigrationsAssembly(InfraReference.Assembly.GetName().Name)),
+            DatabaseConfiguration.DatabaseType.Postgres => options.UseNpgsql(connectionString),
+            DatabaseConfiguration.DatabaseType.Sqlite => options.UseSqlite(connectionString),
         };
     }
 }

@@ -1,9 +1,4 @@
-﻿using System.Net;
-using System.Net.Http.Json;
-using Application.Features.Queries.GetCategoryById;
-using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
+﻿using Application.Features.Queries.GetTenantById;
 
 namespace Presentation.Api.IntegrationTests.Endpoints.TenantEndpoints;
 
@@ -14,7 +9,7 @@ public class GetTenantByIdTests : BaseIntegrationTest
     public async Task ShouldReturnOk_WhenTenantExists()
     {
         // Arrange
-        var existingTenant = new Domain.Tenant { Name = "Existing Category" };
+        var existingTenant = new Tenant { Name = "Existing Tenant" };
         await TenantsRepository.CreateAsync(existingTenant, default);
 
         // Act
@@ -22,22 +17,22 @@ public class GetTenantByIdTests : BaseIntegrationTest
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var category = await response.Content.ReadFromJsonAsync<GetCategoryById.CategoryDto>();
-        category.Should().NotBeNull();
-        category!.Id.Should().Be(existingTenant.Id);
-        category.Name.Should().Be(existingTenant.Name);
+        var tenant = await response.Content.ReadFromJsonAsync<GetTenantById.TenantDto>();
+        tenant.Should().NotBeNull();
+        tenant!.Id.Should().Be(existingTenant.Id);
+        tenant.Name.Should().Be(existingTenant.Name);
     }
 
     [TestMethod]
     public async Task ShouldReturnNotFound_WhenTenantDoesNotExist()
     {
         // Arrange
-        var nonExistentCategoryId = 999;
+        var nonExistentTenantId = 999;
 
         // Act
-        var response = await Client.GetAsync($"{Shared.Endpoints.Base}/{nonExistentCategoryId}");
+        var response = await Client.GetAsync($"{Shared.Endpoints.Base}/{nonExistentTenantId}");
 
         // Assert
-        await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.NotFound, $"Tenant with id {nonExistentCategoryId} not found", ErrorType.NotFound);
+        await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.NotFound, $"Tenant with id {nonExistentTenantId} not found", ErrorType.NotFound);
     }
 }

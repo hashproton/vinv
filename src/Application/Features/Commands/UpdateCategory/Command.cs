@@ -1,10 +1,4 @@
-﻿using Application.Errors;
-using Application.Repositories;
-using Application.Shared;
-using FluentValidation;
-using MediatR;
-
-namespace Application.Features.Commands.UpdateCategory;
+﻿namespace Application.Features.Commands.UpdateCategory;
 
 public static class UpdateCategory
 {

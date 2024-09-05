@@ -1,9 +1,4 @@
 ﻿using Application.Features.Commands.UpdateProduct;
-using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
-using System.Net;
-using System.Net.Http.Json;
 
 namespace Presentation.Api.IntegrationTests.Endpoints.ProductEndpoints;
 

@@ -1,9 +1,4 @@
-﻿using System.Net;
-using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
-
-namespace Presentation.Api.IntegrationTests.Endpoints.TenantEndpoints;
+﻿namespace Presentation.Api.IntegrationTests.Endpoints.TenantEndpoints;
 
 [TestClass]
 public class DeleteTenantTests : BaseIntegrationTest

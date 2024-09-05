@@ -1,10 +1,4 @@
-﻿using Application.Errors;
-using Application.Repositories;
-using Application.Shared;
-using FluentValidation;
-using MediatR;
-
-namespace Application.Features.Commands.UpdateTenant;
+﻿namespace Application.Features.Commands.UpdateTenant;
 
 public static class UpdateTenant
 {
@@ -13,6 +7,8 @@ public static class UpdateTenant
         public required int Id { get; init; }
 
         public required string Name { get; init; }
+        
+        public required TenantStatus Status { get; init; }
     }
 
     public class Validator : AbstractValidator<Command>
@@ -24,6 +20,9 @@ public static class UpdateTenant
             RuleFor(c => c.Name)
                 .NotEmpty()
                 .MaximumLength(200);
+            
+            RuleFor(c => c.Status)
+                .IsInEnum();
         }
     }
 
@@ -42,8 +41,10 @@ public static class UpdateTenant
             {
                 return Result.Failure(TenantErrors.AlreadyExists(request.Name));
             }
-
+            
             tenant.Name = request.Name;
+            tenant.Status = request.Status;
+
             await tenantsRepository.UpdateAsync(tenant, cancellationToken);
 
             return Result.Success();

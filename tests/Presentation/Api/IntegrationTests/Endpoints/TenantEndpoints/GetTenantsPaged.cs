@@ -1,11 +1,5 @@
-﻿using System.Net;
-using System.Net.Http.Json;
-using Application.Features.Queries.GetCategoryById;
-using Application.Features.Queries.GetTenantsPaged;
+﻿using Application.Features.Queries.GetTenantsPaged;
 using Application.Repositories.Shared;
-using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
 
 namespace Presentation.Api.IntegrationTests.Endpoints.TenantEndpoints;
 

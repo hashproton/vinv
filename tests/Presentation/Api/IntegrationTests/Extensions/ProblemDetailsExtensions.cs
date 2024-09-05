@@ -1,9 +1,5 @@
-﻿using Application.Shared;
-using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
+﻿using Microsoft.AspNetCore.Mvc;
 using Application.Extensions;
-using System.Net.Http.Json;
 
 namespace Presentation.Api.IntegrationTests.Extensions;
 

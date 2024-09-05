@@ -1,10 +1,4 @@
-﻿using Application.Errors;
-using Application.Repositories;
-using Application.Shared;
-using FluentValidation;
-using MediatR;
-
-namespace Application.Features.Queries.GetTenantById;
+﻿namespace Application.Features.Queries.GetTenantById;
 
 public static class GetTenantById
 {
@@ -22,11 +16,11 @@ public static class GetTenantById
         }
     }
 
-    public class Handler(ICategoriesRepository categoriesRepository) : IRequestHandler<Query, Result<TenantDto>>
+    public class Handler(ITenantsRepository tenantsRepository) : IRequestHandler<Query, Result<TenantDto>>
     {
         public async Task<Result<TenantDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var tenant = await categoriesRepository.GetByIdAsync(request.Id, cancellationToken);
+            var tenant = await tenantsRepository.GetByIdAsync(request.Id, cancellationToken);
             if (tenant == null)
             {
                 return Result.Failure<TenantDto>(TenantErrors.NotFoundById(request.Id));

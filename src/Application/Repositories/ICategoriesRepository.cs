@@ -1,5 +1,4 @@
 ﻿using Application.Repositories.Shared;
-using Domain;
 
 namespace Application.Repositories;
 

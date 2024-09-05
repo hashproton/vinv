@@ -1,8 +1,4 @@
 ﻿using Application.Features.Commands.DeleteProduct;
-using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
-using System.Net;
 
 namespace Presentation.Api.IntegrationTests.Endpoints.ProductEndpoints;
 

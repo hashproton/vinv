@@ -1,9 +1,5 @@
 ﻿using Application.Errors;
 using Application.Features.Commands.DeleteCategory;
-using Application.Shared;
-using FluentAssertions;
-using Presentation.Api.IntegrationTests.Extensions;
-using System.Net;
 
 namespace Presentation.Api.IntegrationTests.Endpoints.CategoryEndpoints;
 

@@ -1,6 +1,4 @@
-﻿using Application.Shared;
-
-namespace Application.Errors;
+﻿namespace Application.Errors;
 
 public static class CategoryErrors
 {

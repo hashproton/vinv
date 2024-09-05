@@ -1,10 +1,4 @@
-﻿using Application.Errors;
-using Application.Repositories;
-using Application.Shared;
-using FluentValidation;
-using MediatR;
-
-namespace Application.Features.Commands.DeleteCategory;
+﻿namespace Application.Features.Commands.DeleteCategory;
 
 public static class DeleteCategory
 {

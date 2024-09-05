@@ -1,11 +1,4 @@
-﻿using Application.Errors;
-using Application.Repositories;
-using Application.Shared;
-using Domain;
-using FluentValidation;
-using MediatR;
-
-namespace Application.Features.Commands.CreateProduct;
+﻿namespace Application.Features.Commands.CreateProduct;
 
 public static class CreateProduct
 {

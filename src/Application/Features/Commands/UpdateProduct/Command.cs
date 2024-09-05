@@ -1,10 +1,4 @@
-﻿using Application.Errors;
-using Application.Repositories;
-using Application.Shared;
-using FluentValidation;
-using MediatR;
-
-namespace Application.Features.Commands.UpdateProduct;
+﻿namespace Application.Features.Commands.UpdateProduct;
 
 public static class UpdateProduct
 {
