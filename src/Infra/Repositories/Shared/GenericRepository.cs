@@ -1,5 +1,7 @@
 ﻿using Application.Repositories.Shared;
 using Domain.Shared;
+using Microsoft.EntityFrameworkCore;
+using QueryKit;
 
 namespace Infra.Repositories.Shared;
 
@@ -25,7 +27,34 @@ public class GenericRepository<TEntity>(
         await context.SaveChangesAsync(cancellationToken);
     }
 
-    public virtual async Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken) => await context.FindAsync<TEntity>(id, cancellationToken);
+    public virtual async Task<TEntity?> GetByIdAsync(int id, CancellationToken cancellationToken) => 
+        await context.FindAsync<TEntity>([id], cancellationToken);
+    
+    public async Task<PagedResult<TEntity>> GetPagedAsync(PagedQuery pagedQuery, CancellationToken cancellationToken)
+    {
+        var query = context.Set<TEntity>().AsNoTracking();
+
+        if (pagedQuery.Filter is not null)
+        {
+            query = query.ApplyQueryKitFilter(pagedQuery.Filter);
+        }
+        
+        var totalCount = await query
+            .CountAsync(cancellationToken);
+        
+        var items = await query
+            .Skip(pagedQuery.Skip)
+            .Take(pagedQuery.Take)
+            .ToListAsync(cancellationToken);
+        
+        return new PagedResult<TEntity>
+        {
+            Skip = pagedQuery.Skip,
+            Take = pagedQuery.Take,
+            Total = totalCount,
+            Items = items
+        };
+    }
 
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {

@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using Infra;
 using Presentation.Api;
 using Presentation.Api.Endpoints;
+using Presentation.Api.Extensions.DependencyInjection;
 using Presentation.Api.Middlewares;
 
 [assembly: InternalsVisibleTo("tests.Presentation.Api.IntegrationTests")]
@@ -22,19 +23,7 @@ builder.Configuration
 builder.Services
     .AddInfra(builder.Configuration)
     .AddEndpointsApiExplorer()
-    .AddSwaggerGen(c =>
-    {
-        c.CustomSchemaIds(type =>
-        {
-            var fullName = type.FullName;
-            if (type.IsNested)
-            {
-                return type.DeclaringType?.Name;
-            }
-
-            return fullName;
-        });
-    })
+    .AddSwagger()
     .AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddCors();
@@ -59,6 +48,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app
+    .MapTenantsEndpoints()
     .MapCategoryEndpoints()
     .MapProductEndpoints();
 

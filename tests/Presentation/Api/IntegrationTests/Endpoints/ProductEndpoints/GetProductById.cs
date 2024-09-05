@@ -10,6 +10,8 @@ namespace Presentation.Api.IntegrationTests.Endpoints.ProductEndpoints;
 [TestClass]
 public class GetProductByIdTests : BaseIntegrationTest
 {
+    private const string Endpoint = "/api/products";
+
     [TestMethod]
     public async Task GetProductById_ShouldReturnOk_WhenProductExists()
     {
@@ -21,7 +23,7 @@ public class GetProductByIdTests : BaseIntegrationTest
         await ProductsRepository.CreateAsync(existingProduct, default);
 
         // Act
-        var response = await Client.GetAsync($"/api/products/{existingProduct.Id}");
+        var response = await Client.GetAsync($"{Endpoint}/{existingProduct.Id}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -39,7 +41,7 @@ public class GetProductByIdTests : BaseIntegrationTest
         const int nonExistentProductId = 999;
 
         // Act
-        var response = await Client.GetAsync($"/api/products/{nonExistentProductId}");
+        var response = await Client.GetAsync($"{Endpoint}/{nonExistentProductId}");
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.NotFound, $"Product with id {nonExistentProductId} not found", ErrorType.NotFound);
@@ -52,7 +54,7 @@ public class GetProductByIdTests : BaseIntegrationTest
         var query = new GetProductById.Query { Id = 0 };
 
         // Act
-        var response = await Client.GetAsync($"/api/products/{query.Id}");
+        var response = await Client.GetAsync($"{Endpoint}/{query.Id}");
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.BadRequest, "'Id' must be greater than '0'.", ErrorType.ValidationError);

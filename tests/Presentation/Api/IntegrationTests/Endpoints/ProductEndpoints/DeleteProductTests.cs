@@ -9,6 +9,8 @@ namespace Presentation.Api.IntegrationTests.Endpoints.ProductEndpoints;
 [TestClass]
 public class DeleteProductTests : BaseIntegrationTest
 {
+    private const string Endpoint = "/api/products";
+
     [TestMethod]
     public async Task DeleteProduct_ShouldReturnNoContent_WhenProductIsDeleted()
     {
@@ -20,7 +22,7 @@ public class DeleteProductTests : BaseIntegrationTest
         await ProductsRepository.CreateAsync(existingProduct, default);
 
         // Act
-        var response = await Client.DeleteAsync($"/api/products/{existingProduct.Id}");
+        var response = await Client.DeleteAsync($"{Endpoint}/{existingProduct.Id}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -37,7 +39,7 @@ public class DeleteProductTests : BaseIntegrationTest
         var nonExistentProductId = 999;
 
         // Act
-        var response = await Client.DeleteAsync($"/api/products/{nonExistentProductId}");
+        var response = await Client.DeleteAsync($"{Endpoint}/{nonExistentProductId}");
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.NotFound, $"Product with id {nonExistentProductId} not found", ErrorType.NotFound);
@@ -50,7 +52,7 @@ public class DeleteProductTests : BaseIntegrationTest
         var command = new DeleteProduct.Command { Id = 0 };
 
         // Act
-        var response = await Client.DeleteAsync($"/api/products/{command.Id}");
+        var response = await Client.DeleteAsync($"{Endpoint}/{command.Id}");
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.BadRequest, "'Id' must be greater than '0'.", ErrorType.ValidationError);

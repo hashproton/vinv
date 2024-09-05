@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{B36C412B-1F24-40B1-856E-556161682AF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "tests\Presentation\Api\IntegrationTests\IntegrationTests.csproj", "{F3C183A7-561D-4B1C-AA2A-7538448FD24F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "tests\Presentation\Api\IntegrationTests\IntegrationTests.csproj", "{F3C183A7-561D-4B1C-AA2A-7538448FD24F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

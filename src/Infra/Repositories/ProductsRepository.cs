@@ -7,10 +7,10 @@ namespace Infra.Repositories;
 
 public class ProductsRepository(AppDbContext context) : GenericRepository<Product>(context), IProductsRepository
 {
-    private readonly AppDbContext context = context;
+    private readonly AppDbContext _context = context;
 
     public async Task<Product?> GetByNameAsync(string name, CancellationToken cancellationToken)
     {
-        return await context.Products.FirstOrDefaultAsync(p => p.Name == name, cancellationToken);
+        return await _context.Products.FirstOrDefaultAsync(p => p.Name == name, cancellationToken);
     }
 }

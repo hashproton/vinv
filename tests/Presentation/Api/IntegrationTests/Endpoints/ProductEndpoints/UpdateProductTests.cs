@@ -10,6 +10,8 @@ namespace Presentation.Api.IntegrationTests.Endpoints.ProductEndpoints;
 [TestClass]
 public class UpdateProductTests : BaseIntegrationTest
 {
+    private const string Endpoint = "/api/products";
+
     [TestMethod]
     public async Task UpdateProduct_ShouldReturnNoContent_WhenProductIsUpdated()
     {
@@ -23,7 +25,7 @@ public class UpdateProductTests : BaseIntegrationTest
         var command = new UpdateProduct.Command { Id = existingProduct.Id, Name = "Updated Product", CategoryId = existingCategory.Id };
 
         // Act
-        var response = await Client.PutAsJsonAsync("/api/products", command);
+        var response = await Client.PutAsJsonAsync(Endpoint, command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -42,7 +44,7 @@ public class UpdateProductTests : BaseIntegrationTest
         var command = new UpdateProduct.Command { Id = 999, Name = "Nonexistent Product", CategoryId = 1 };
 
         // Act
-        var response = await Client.PutAsJsonAsync("/api/products", command);
+        var response = await Client.PutAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.NotFound, $"Product with id {command.Id} not found", ErrorType.NotFound);
@@ -60,7 +62,7 @@ public class UpdateProductTests : BaseIntegrationTest
         var command = new UpdateProduct.Command { Id = existingProduct.Id, Name = "Updated Product", CategoryId = 999 };
 
         // Act
-        var response = await Client.PutAsJsonAsync("/api/products", command);
+        var response = await Client.PutAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.NotFound, $"Category with id {command.CategoryId} not found", ErrorType.NotFound);
@@ -73,7 +75,7 @@ public class UpdateProductTests : BaseIntegrationTest
         var command = new UpdateProduct.Command { Id = 0, Name = "Updated Product", CategoryId = 1 };
 
         // Act
-        var response = await Client.PutAsJsonAsync("/api/products", command);
+        var response = await Client.PutAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.BadRequest, "'Id' must be greater than '0'.", ErrorType.ValidationError);
@@ -92,7 +94,7 @@ public class UpdateProductTests : BaseIntegrationTest
         var command = new UpdateProduct.Command { Id = existingProduct.Id, Name = "", CategoryId = existingCategory.Id };
 
         // Act
-        var response = await Client.PutAsJsonAsync("/api/products", command);
+        var response = await Client.PutAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.BadRequest, "'Name' must not be empty.", ErrorType.ValidationError);
@@ -111,7 +113,7 @@ public class UpdateProductTests : BaseIntegrationTest
         var command = new UpdateProduct.Command { Id = existingProduct.Id, Name = new string('a', 201), CategoryId = existingCategory.Id };
 
         // Act
-        var response = await Client.PutAsJsonAsync("/api/products", command);
+        var response = await Client.PutAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.BadRequest, "The length of 'Name' must be 200 characters or fewer. You entered 201 characters.", ErrorType.ValidationError);

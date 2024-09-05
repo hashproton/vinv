@@ -12,6 +12,7 @@ public abstract class BaseIntegrationTest : IAsyncDisposable
     private AppDbContext Context => GetScopedService<AppDbContext>();
 
     protected HttpClient Client { get; private set; } = null!;
+    protected ITenantsRepository TenantsRepository => GetScopedService<ITenantsRepository>();
     protected ICategoriesRepository CategoriesRepository => GetScopedService<ICategoriesRepository>();
     protected IProductsRepository ProductsRepository => GetScopedService<IProductsRepository>();
 

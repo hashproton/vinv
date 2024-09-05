@@ -10,6 +10,8 @@ namespace Presentation.Api.IntegrationTests.Endpoints.ProductEndpoints;
 [TestClass]
 public class CreateProductTests : BaseIntegrationTest
 {
+    private const string Endpoint = "/api/products";
+
     [TestMethod]
     public async Task CreateProduct_ShouldReturnCreatedResult_WhenProductIsCreated()
     {
@@ -20,7 +22,7 @@ public class CreateProductTests : BaseIntegrationTest
         var command = new CreateProduct.Command { Name = "New Product", CategoryId = existingCategory.Id };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/products", command);
+        var response = await Client.PostAsJsonAsync(Endpoint, command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -41,7 +43,7 @@ public class CreateProductTests : BaseIntegrationTest
         var command = new CreateProduct.Command { Name = "", CategoryId = 1 };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/products", command);
+        var response = await Client.PostAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.BadRequest, "'Name' must not be empty.", ErrorType.ValidationError);
@@ -54,7 +56,7 @@ public class CreateProductTests : BaseIntegrationTest
         var command = new CreateProduct.Command { Name = new string('a', 201), CategoryId = 1 };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/products", command);
+        var response = await Client.PostAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.BadRequest, "The length of 'Name' must be 200 characters or fewer. You entered 201 characters.", ErrorType.ValidationError);
@@ -67,7 +69,7 @@ public class CreateProductTests : BaseIntegrationTest
         var command = new CreateProduct.Command { Name = "Valid Product Name", CategoryId = 0 };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/products", command);
+        var response = await Client.PostAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.BadRequest, "'Category Id' must be greater than '0'.", ErrorType.ValidationError);
@@ -80,7 +82,7 @@ public class CreateProductTests : BaseIntegrationTest
         var command = new CreateProduct.Command { Name = "New Product", CategoryId = 999 };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/products", command);
+        var response = await Client.PostAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.NotFound, $"Category with id {command.CategoryId} not found", ErrorType.NotFound);
@@ -99,7 +101,7 @@ public class CreateProductTests : BaseIntegrationTest
         var command = new CreateProduct.Command { Name = "Existing Product", CategoryId = existingCategory.Id };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/products", command);
+        var response = await Client.PostAsJsonAsync(Endpoint, command);
 
         // Assert
         await response.ReadAndAssertProblemDetailsAsync(HttpStatusCode.Conflict, $"Product with name {command.Name} already exists", ErrorType.AlreadyExists);
